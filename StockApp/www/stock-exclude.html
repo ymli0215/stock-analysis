@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title></title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- MetisMenu CSS -->
+    <link href="vendor/metisMenu/metisMenu.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="css/sb-admin-2.css" rel="stylesheet">
+
+    <!-- Custom Fonts -->
+    <link href="vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    
+    <!-- Custom Fonts 
+    <link rel="stylesheet" type="text/css" href="css/stocks.css" />
+	-->
+	<link rel="stylesheet" type="text/css" href="css/custom.css" />
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body>
+
+    <div id="wrapper">
+
+        <!-- Navigation -->
+        <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="index.html"></a>
+            </div>
+            <!-- /.navbar-header -->
+
+            <ul class="nav navbar-top-links navbar-right">
+                
+                <!-- /.dropdown -->
+            </ul>
+            <!-- /.navbar-top-links -->
+
+            <div class="navbar-default sidebar" role="navigation">
+                <div class="sidebar-nav navbar-collapse">
+                    <ul class="nav" id="side-menu">
+                        <li>
+                        </li>
+                        
+                    </ul>
+                </div>
+                <!-- /.sidebar-collapse -->
+            </div>
+            <!-- /.navbar-static-side -->
+        </nav>
+
+        <div id="page-wrapper">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h1 class="page-header">除權息查詢</h1>
+                    </div>
+                    <!-- /.col-lg-12 -->
+                </div>
+                <!-- /.row -->
+                <div class="row">
+                    <div class="col-lg-12">
+                    	<div class="panel-default">
+							<div class="form-group">
+								<button type="button" class="btn btn-default" onclick="queryData()">查詢</button>
+							</div>
+							<div class="table-responsive">
+                                <table id="table1" data-inline="true" width="100%" border="1">
+						        <tr>
+						        <td>代碼</td><td>名稱</td><td>除權息日</td><td>價格</td><td>除權息後價格</td>
+						        <td>配息</td><td>配股</td><td>除息率</td><td>除權率</td><td>除權息率</td><td>除權息黃金率</td>
+						        <td>期貨</td><td>權證</td>
+						        </tr>
+						        </table>
+                            </div>
+                    	</div>
+                    </div>
+                    <!-- /.col-lg-12 -->
+                </div>
+                <!-- /.row -->
+            </div>
+            <!-- /.container-fluid -->
+        </div>
+        <!-- /#page-wrapper -->
+
+    </div>
+    <!-- /#wrapper -->
+
+    <!-- jQuery -->
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/jquery/jquery.blockUI.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+
+    <!-- Metis Menu Plugin JavaScript -->
+    <script src="vendor/metisMenu/metisMenu.min.js"></script>
+    
+    <!-- Custom app JavaScript -->
+    <script src="js/stockapp.js"></script>
+
+    <!-- Custom Theme JavaScript -->
+    <script src="js/sb-admin-2.js"></script>
+
+    <!-- highcharts JavaScript -->
+    <script src="vendor/highcharts/highstock.js"></script>
+    <script src="vendor/highcharts/exporting.js"></script>
+
+	<script type="text/javascript">
+		resetMenu();
+
+		function queryData() {
+			
+		    var url = 'https://stock.bignoodle.net/StockServer/stockExclude/queryExcludeData?callback=jsonp';     
+		    //var url = 'http://localhost:8080/web/stock/queryExcludeData?callback=jsonp';
+		     
+		    $.ajax({
+		        url: url,
+		        dataType: "jsonp",
+		        jsonpCallback: "jsonp",
+		        success: function (result) {
+		        	$(".trc").remove();
+		        	$.each(result, function(idx, obj) {
+		        		var date = new Date(obj.excludeDate);
+		        		var style = '';
+		        		if(obj.excludeDividendRate >= 5) {
+		        			style = " style = ' background-color:#fff700' ";
+		        		}
+
+		        		var tr = "<tr class='trc' " + style + ">";
+		        		tr += "<td>" + obj.id.stockId + "</td>";
+		        		tr += "<td>" + obj.stockName + "</td>";
+		        		tr += "<td>" + date.getFullYear() + "/" + (date.getMonth() + 1) + '/' + date.getDate() + "</td>";
+		        		tr += "<td>" + obj.price + "</td>";
+		        		tr += "<td>" + obj.afterExPrice + "</td>";
+		        		tr += "<td>" + obj.excludeDividend + "</td>";
+		        		tr += "<td>" + obj.excludeRight + "</td>";
+		        		tr += "<td>" + obj.excludeDividendRate + "</td>";
+		        		tr += "<td>" + obj.excludeRightRate + "</td>";
+		        		//tr += "<td>" + obj.cashYields + "</td>";
+		        		//tr += "<td>" + obj.yields + "</td>";
+		        		tr += "<td>" + obj.rdRate + "</td>";
+		        		tr += "<td>" + obj.rdGoldRate + "</td>";
+		        		tr += "<td>" + obj.futures + "</td>";
+		        		tr += "<td>" + obj.wants + "</td>";
+		        		
+		                tr += "</tr>";
+		                $("#table1").append(tr);
+		        	});
+		        },
+		        error: function (request,error) {
+		            alert('發生錯誤，請晚點再試!'+error);
+		        },
+		        complete: function (request,textStatus) {
+		        }
+		    });
+		}
+
+		</script>
+</body>
+
+</html>

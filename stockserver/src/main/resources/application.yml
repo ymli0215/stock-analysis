@@ -1,0 +1,57 @@
+spring:
+  profiles:
+    active: base
+  mvc:
+    view:
+      prefix: /
+      suffix: .jsp
+  messages:
+    basename: i18n/messages
+    encoding: UTF-8
+  datasource:
+    url: jdbc:mysql://1.34.57.147:3305/stockapp?useUnicode=true&characterEncoding=UTF-8
+    username: root
+    password: ca27an12C
+    driver-class-name: com.mysql.jdbc.Driver
+  jpa:
+    show-sql: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL55Dialect
+        format_sql: false
+        show_sql: false
+  hikari:
+    maximum-pool-size: 10
+    minimum-idle: 5
+    idle-timeout: 300000
+    connection-timeout: 30000
+
+server:
+  port: 8089
+  servlet:
+    context-path: /StockServer
+
+logging:
+  level:
+    root: INFO
+    com.stockapp.stockserver: INFO
+    org.apache.hc.client5: INFO
+    org:
+      hibernate: OFF
+      hibernate.SQL: OFF
+      hibernate.type.descriptor.sql.BasicBinder: OFF
+  file:
+    name: logs/stockapp.log
+  logback:
+    rollingpolicy:
+      # 1. 檔名模式：包含日期與流水號 (%i 為流水號)
+      file-name-pattern: "logs/stockapp-%d{yyyy-MM-dd}.%i.log"
+      # 2. 單一檔案最大容量：100MB
+      max-file-size: 100MB
+      # 3. 總日誌保留天數：例如保留 30 天
+      max-history: 30
+      # 4. 總日誌檔案上限：當所有日誌加起來超過此值會刪除舊的
+      total-size-cap: 2GB
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+    file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"

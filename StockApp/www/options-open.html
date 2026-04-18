@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title></title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- MetisMenu CSS -->
+    <link href="vendor/metisMenu/metisMenu.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="css/sb-admin-2.css" rel="stylesheet">
+
+    <!-- Custom Fonts -->
+    <link href="vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    
+    <!-- Custom Fonts 
+    <link rel="stylesheet" type="text/css" href="css/stocks.css" />
+	-->
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body onload="queryChart()">
+
+    <div id="wrapper">
+
+        <!-- Navigation -->
+        <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="index.html"></a>
+            </div>
+            <!-- /.navbar-header -->
+
+            <ul class="nav navbar-top-links navbar-right">
+                
+                <!-- /.dropdown -->
+            </ul>
+            <!-- /.navbar-top-links -->
+
+            <div class="navbar-default sidebar" role="navigation">
+                <div class="sidebar-nav navbar-collapse">
+                    <ul class="nav" id="side-menu">
+                        <li>
+                        </li>
+                        
+                    </ul>
+                </div>
+                <!-- /.sidebar-collapse -->
+            </div>
+            <!-- /.navbar-static-side -->
+        </nav>
+
+        <div id="page-wrapper">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h1 class="page-header">外資選擇權均價資料</h1>
+                    </div>
+                    <!-- /.col-lg-12 -->
+                </div>
+                <!-- /.row -->
+                <div class="row">
+                    <div class="col-lg-12">
+                    	<div class="panel-default">
+                    		<div id="Dcontainer" style="WIDTH:100%; HEIGHT: 600px; margin:0 auto; position:relative;"></div>
+                    	</div>
+                    	<div class="panel-default">
+                    		<div class="table-responsive">
+                                <table class="table table-striped table-bordered table-hover">
+                                    <thead class="thead">
+                                        <tr>
+                                            <th rowspan=2>日期</th>
+                                            <th colspan=2>BUY CALL</th>
+                                            <th colspan=2>BUY PUT</th>
+                                            <th rowspan=2>多空金額差距</th>
+                                        </tr>
+                                        <tr>
+                                            <th>CALL留倉</th>
+                                            <th>C均價</th>
+                                            <th>PUT留倉</th>
+                                            <th>P均價</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="tablebody">
+                                        <tr>
+                                            <td>2018/6/26</td>
+                                            <td>30875</td>
+                                            <td>1</td>
+                                            <td>@2</td>
+                                            <td>3</td>
+                                            <td>4</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                    	</div>
+                    </div>
+                    <!-- /.col-lg-12 -->
+                </div>
+                <!-- /.row -->
+            </div>
+            <!-- /.container-fluid -->
+        </div>
+        <!-- /#page-wrapper -->
+
+    </div>
+    <!-- /#wrapper -->
+
+    <!-- jQuery -->
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/jquery/jquery.blockUI.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+
+    <!-- Metis Menu Plugin JavaScript -->
+    <script src="vendor/metisMenu/metisMenu.min.js"></script>
+    
+    <!-- Custom app JavaScript -->
+    <script src="js/stockapp.js"></script>
+
+    <!-- Custom Theme JavaScript -->
+    <script src="js/sb-admin-2.js"></script>
+
+    <!-- highcharts JavaScript -->
+    <script src="vendor/highcharts/highstock.js"></script>
+    <script src="vendor/highcharts/exporting.js"></script>
+
+	<script>
+	resetMenu();
+	
+	var dateType = 'D';
+	function printChart() {
+		var url = 'https://stock.bignoodle.net/StockServer/options/optionsopen?dc=100&callback=call';
+		//var url = 'http://localhost:8080/web/options/optionsopen?dc=20&callback=call';
+		
+		return $.ajax({
+	        url: url,
+	        dataType: "jsonp",
+	        jsonpCallback: "call",
+	        success: function (data) {
+	        	$("#tablebody").children("tr").remove();
+	        	$.each(data['charts'], function(index, value) {
+	        		var tr = "";
+	        		if(index > 0 && index % 10 == 0) {
+	        			tr += $(".thead").html();
+	        		}
+	        		tr += "<tr>";
+	        		tr += "<td>" + value.dataString + "</td>";
+	        		tr += "<td>" + value.bCallOI + "</td>";
+	        		tr += "<td>" + value.bCallAvgPrice + "</td>";
+	        		tr += "<td>" + value.bPutOI + "</td>";
+	        		tr += "<td>" + value.bPutAvgPrice + "</td>";
+	        		tr += "<td>" + value.bsDiffAmont + "</td>";
+	        		tr += "</tr>";
+	        		
+	        		$("#tablebody").append(tr);
+	        	});
+	        	
+	            // create the chart
+		        $('#Dcontainer').highcharts('StockChart', {
+		        	chart: {
+		                 height: 600
+		            },
+		            tooltip: {
+		            	xDateFormat:'%Y-%m-%d',shared:true
+		            },
+		            colors: ['#058DC7', '#50B432', '#ED561B', '#CC7700', '#4f9ab7', '#64E572', 
+		                     '#FF9655', '#FFF263', '#873322'],
+		            plotOptions: {
+		                candlestick: {
+		                    color: '#005500',
+		                    lineColor: '#005500',
+		                    upColor: '#D52B00',
+		                    upLineColor: '#D52B00'
+		                },
+		                column: {
+		                    color: '#FF9900'
+		                },
+		                line: {
+		                    lineWidth: 2,
+		                    marker: { states: { hover: { enabled: false }, select: { enabled: false } } }
+		                },
+		                dataLabels: {
+		                    enabled: false
+		                }
+		            },
+		            rangeSelector : {
+		                //selected : 1
+		                //關閉左上方的zoom按鈕
+		            	enabled: false
+		            },
+		            title : {
+		                text : data['sname']
+		            },
+		            yAxis: [{
+		                height: 200,
+		                opposite: true
+		            }, {
+		                top: 210,
+		                height: 150
+		            }, {
+		                top: 370,
+		                height: 150
+		            }],
+		            series : [{
+		                type : 'candlestick',
+		                name : data['sname'],
+		                data : data['sdata']
+		            },{
+		                name : '買權未平倉量',
+		                data : data['bCallOI'],
+		                color: '#058DC7',
+		                yAxis: 2
+		            },{
+		                name : '買權未平倉均價',
+		                data : data['bCallAvgPrice'],
+		                color: '#873322',
+		                yAxis: 1
+		            },{
+		                name : '賣權未平倉量',
+		                data : data['bPutOI'],
+		                color: '#FFF263',
+		                yAxis: 2
+		            },{
+		                name : '賣權未平倉均價',
+		                data : data['bPutAvgPrice'],
+		                color: '#FF9655',
+		                yAxis: 1
+		            }]
+		        });
+	        },
+	        error: function (request,error) {
+	            alert('發生錯誤，請晚點再試!'+error);
+	        },
+	        complete: function (request,textStatus) {
+	        }
+	    });
+	}
+
+function queryChart() {
+printChart();
+}
+	</script>
+</body>
+
+</html>

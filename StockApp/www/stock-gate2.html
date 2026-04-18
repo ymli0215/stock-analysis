@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title></title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- MetisMenu CSS -->
+    <link href="vendor/metisMenu/metisMenu.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="css/sb-admin-2.css" rel="stylesheet">
+
+    <!-- Custom Fonts -->
+    <link href="vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    
+    <!-- Custom Fonts 
+    <link rel="stylesheet" type="text/css" href="css/stocks.css" />
+	-->
+	<link rel="stylesheet" type="text/css" href="css/custom.css" />
+	<link rel="stylesheet" type="text/css" href="vendor/bootstrap-select/css/bootstrap-select.css" />
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body>
+
+    <div id="wrapper">
+
+        <!-- Navigation -->
+        <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="index.html"></a>
+            </div>
+            <!-- /.navbar-header -->
+
+            <ul class="nav navbar-top-links navbar-right">
+                
+                <!-- /.dropdown -->
+            </ul>
+            <!-- /.navbar-top-links -->
+
+            <div class="navbar-default sidebar" role="navigation">
+                <div class="sidebar-nav navbar-collapse">
+                    <ul class="nav" id="side-menu">
+                        <li>
+                        </li>
+                        
+                    </ul>
+                </div>
+                <!-- /.sidebar-collapse -->
+            </div>
+            <!-- /.navbar-static-side -->
+        </nav>
+
+        <div id="page-wrapper">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h1 class="page-header">多空轉折查詢</h1>
+                    </div>
+                    <!-- /.col-lg-12 -->
+                </div>
+                <!-- /.row -->
+                <div class="row">
+                    <div class="col-lg-12">
+                    	<div class="panel-default">
+                    		<div class="form-group">
+								<label>查看代碼 : </label>
+								<select id="ids" title="可輸入代碼" class="show-tick form-control" data-live-search="true">
+						        </select>
+								<button type="button" class="btn btn-default" onclick="queryChart()">查詢</button>
+							</div>
+							<div class="form-group">
+								<label>直接查詢 : </label>
+								<button type="button" class="btn btn-default" onclick="queryChart0('0000')">大盤</button>
+								<button type="button" class="btn btn-default" onclick="queryChartf('FITX')">期貨</button>
+								<button type="button" class="btn btn-default" onclick="queryChartf('FITXP')">期貨盤後</button>
+								<button type="button" class="btn btn-default" onclick="queryChartf('STW')">摩台</button>
+								<button type="button" class="btn btn-default" onclick="queryChartf('YM')">小道</button>
+								<button type="button" class="btn btn-default" onclick="queryChartf('DJI')">道瓊</button>
+								<button type="button" class="btn btn-default" onclick="queryChartf('NASDAQ')">NASDAQ</button>
+								<button type="button" class="btn btn-default" onclick="queryChartf('SP500')">SP500</button>
+								<button type="button" class="btn btn-default" onclick="queryChartf('BR')">費半</button>
+							</div>
+							<div class="panel-body">
+	                            <!-- Nav tabs -->
+	                            <ul class="nav nav-tabs">
+							      <li><a id="tab4" href="#four" data-toggle="tab">轉折分析</a></li>
+							      <li><a id="tab5" href="#five" data-toggle="tab">權證資料</a></li>
+	                            </ul>
+	
+	                            <!-- Tab panes -->
+	                            <div class="tab-content">
+								  <div id="four" class="tab-pane fade">
+								  	<table style="width:90%" id="DReturnTable" border="1" cellpadding="0" cellspacing="0">
+							  		<tr><td>收盤</td><td><span id='close'/></td><td>R1</td><td>R2</td><td>R3</td><td>轉折變化分析</td><td>交易策略</td></tr>
+							  		<tr><td class='headerTr'>日期</td><td class='headerTr'><span id='D1'/></td><td class='headerTr'><span id='D2'/></td>
+							  			<td class='headerTr'><span id='D3'/></td><td class='headerTr'><span id='D4'/></td>
+							  			<td class='headerTr'><span id='D5'/></td><td rowspan=2><span id='D16'/></td></tr>	
+							  		<tr><td>日轉折</td><td><span id='D6'/></td><td><span id='D7'/></td><td><span id='D8'/></td>
+							  			<td><span id='D9'/></td><td><span id='D10'/></td></tr>
+							  		<tr><td>時間分析</td><td><span id='D11'/></td><td><span id='D12'/></td><td><span id='D13'/>
+							  			</td><td><span id='D14'/></td><td><span id='D15'/></td>
+							  			<td><span id='D17'/></td></tr>
+							  		<tr><td class='headerTr'>周日期</td><td class='headerTr'><span id='W1'/></td><td class='headerTr'><span id='W2'/></td>
+							  			<td class='headerTr'><span id='W3'/></td><td class='headerTr'><span id='W4'/></td>
+							  			<td class='headerTr'><span id='W5'/></td><td rowspan=2><span id='W16'/></td></tr>	
+							  		<tr><td>周轉折</td><td><span id='W6'/></td><td><span id='W7'/></td><td><span id='W8'/></td>
+							  			<td><span id='W9'/></td><td><span id='W10'/></td></tr>
+							  		<tr><td>時間分析</td><td><span id='W11'/></td><td><span id='W12'/></td><td><span id='W13'/>
+							  			</td><td><span id='W14'/></td><td><span id='W15'/></td>
+							  			<td><span id='W17'/></td></tr>
+							  		<tr><td class='headerTr'>月份</td><td class='headerTr'><span id='M1'/></td><td class='headerTr'><span id='M2'/></td>
+							  			<td class='headerTr'><span id='M3'/></td><td class='headerTr'><span id='M4'/></td>
+							  			<td class='headerTr'><span id='M5'/></td><td rowspan=2><span id='M16'/></td></tr>	
+							  		<tr><td>月轉折</td><td><span id='M6'/></td><td><span id='M7'/></td><td><span id='M8'/></td>
+							  			<td><span id='M9'/></td><td><span id='M10'/></td></tr>
+							  		<tr><td>時間分析</td><td><span id='M11'/></td><td><span id='M12'/></td><td><span id='M13'/>
+							  			</td><td><span id='M14'/></td><td><span id='M15'/></td>
+							  			<td><span id='M17'/></td></tr>
+								  	</table>
+								  	
+									<div style="overflow: scroll;-webkit-overflow-scrolling: touch;">
+									<table style="width:90%" id="DlevelTable" border="1" cellpadding="0" cellspacing="0">
+									<tr><td>日期</td><td>開</td><td>高</td><td>低</td><td>收</td>
+									<td>3ma</td><td>10ma</td><td>21ma</td>
+									<td>買耗</td><td>嘎空</td><td>轉強</td><td>中軸</td><td>回撐</td>
+									<td>轉弱</td><td>殺多</td><td>賣耗</td><td>多空線</td>
+									</tr>
+									</table>
+									</div>
+									<div style="overflow: scroll;-webkit-overflow-scrolling: touch;">
+									<table style="width:90%" id="WlevelTable" border="1" cellpadding="0" cellspacing="0">
+									<tr><td>日期</td><td>開</td><td>高</td><td>低</td><td>收</td>
+									<td>3ma</td><td>10ma</td><td>21ma</td>
+									<td>買耗</td><td>嘎空</td><td>轉強</td><td>中軸</td><td>回撐</td>
+									<td>轉弱</td><td>殺多</td><td>賣耗</td><td>多空線</td>
+									</tr>
+									</table>
+									</div>
+									<div style="overflow: scroll;-webkit-overflow-scrolling: touch;">
+									<table style="width:90%" id="MlevelTable" border="1" cellpadding="0" cellspacing="0">
+									<tr><td>日期</td><td>開</td><td>高</td><td>低</td><td>收</td>
+									<td>3ma</td><td>10ma</td><td>21ma</td>
+									<td>買耗</td><td>嘎空</td><td>轉強</td><td>中軸</td><td>回撐</td>
+									<td>轉弱</td><td>殺多</td><td>賣耗</td><td>多空線</td>
+									</tr>
+									</table>
+									</div>
+								  </div>
+								  <div id="five" class="tab-pane fade">
+									<div style="overflow: scroll;-webkit-overflow-scrolling: touch;">
+									<table style="width:90%" id="CWantsTable" border="1" cellpadding="0" cellspacing="0">
+									<tr class="headerTr"><td>類別</td><td>代碼</td><td>名稱</td><td>委買價</td><td>委賣價</td><td>履約價</td><td>價內外%</td>
+									<td>剩餘天數</td><td>行使比例</td><td>實質槓桿</td><td>BIV</td><td>SIV</td>
+									<td>距損平點%</td>
+									</tr>
+									</table>
+									<br/><br/>
+									<table style="width:90%" id="PWantsTable" border="1" cellpadding="0" cellspacing="0">
+									<tr class="headerTr"><td>類別</td><td>代碼</td><td>名稱</td><td>委買價</td><td>委賣價</td><td>履約價</td><td>價內外%</td>
+									<td>剩餘天數</td><td>行使比例</td><td>實質槓桿</td><td>BIV</td><td>SIV</td>
+									<td>距損平點%</td>
+									</tr>
+									</table>
+									</div>
+								  </div>
+	                            </div>
+	                        </div>
+                    	</div>
+                    </div>
+                    <!-- /.col-lg-12 -->
+                </div>
+                <!-- /.row -->
+            </div>
+            <!-- /.container-fluid -->
+        </div>
+        <!-- /#page-wrapper -->
+
+    </div>
+    <!-- /#wrapper -->
+
+    <!-- jQuery -->
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/bootstrap-select/bootstrap-select.js"></script>
+    <script src="vendor/jquery/jquery.blockUI.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+
+    <!-- Metis Menu Plugin JavaScript -->
+    <script src="vendor/metisMenu/metisMenu.min.js"></script>
+    
+    <!-- Custom app JavaScript -->
+    <script src="js/stockapp.js"></script>
+
+    <!-- Custom Theme JavaScript -->
+    <script src="js/sb-admin-2.js"></script>
+
+    <!-- highcharts JavaScript -->
+    <script src="vendor/highcharts/highstock.js"></script>
+    <script src="vendor/highcharts/exporting.js"></script>
+
+	<script type="text/javascript">
+	resetMenu();
+	initIds('ids');
+
+		function printColor(price, closePrice) {
+			if(price > closePrice) {
+				return "<font color=red>"+price+"</font>";
+			}
+			else if(price < closePrice) {
+				return "<font color=green>"+price+"</font>";
+			}
+			
+			return price;
+		}
+		var dataNumber = 20;
+		function printChart(dateType, id) {
+			var url = 'https://stock.bignoodle.net/StockServer/stock/queryStockTurnData?si=' + id.toUpperCase() + '&dt=' + dateType + '&dn=' + dataNumber + '&callback=call';
+			//var url = 'http://localhost:8080/web/stock/queryStockTurnData?si=' + $("#ids").val().toUpperCase() + '&dt=' + dateType + '&dn=20&callback=call';
+			
+			return $.ajax({
+		        url: url,
+		        dataType: "jsonp",
+		        jsonpCallback: "call",
+		        success: function (data) {
+
+		        	var closePrice = data['close'];
+		            $("#close").text(closePrice);
+		            
+		            //清空table
+		            $("#" + dateType + "levelTable").find(".dataTr").remove();
+		            var charts = data['charts'];
+		            $.each(charts, function(index, value) {
+		            	var tr = "<tr class='dataTr'>";
+		            	tr += "<td>" + Highcharts.dateFormat('%Y/%m/%d', value.dataTime) + "</td>";
+		            	tr += "<td>" + value.open + "</td>";
+		            	tr += "<td>" + value.high + "</td>";
+		            	tr += "<td>" + value.low + "</td>";
+		            	tr += "<td>" + value.close + "</td>";
+		            	tr += "<td>" + (value.ma3!=null?value.ma3:"") + "</td>";
+		            	tr += "<td>" + (value.ma10!=null?value.ma10:"") + "</td>";
+		            	tr += "<td>" + (value.ma21!=null?value.ma21:"") + "</td>";
+		            	tr += "<td>" + printColor(value.level1, closePrice) + "</td>";
+		            	tr += "<td>" + printColor(value.level2, closePrice) + "</td>";
+		            	tr += "<td>" + printColor(value.level3, closePrice) + "</td>";
+		            	tr += "<td>" + printColor(value.level4, closePrice) + "</td>";
+		            	tr += "<td>" + printColor(value.level5, closePrice) + "</td>";
+		            	tr += "<td>" + printColor(value.level6, closePrice) + "</td>";
+		            	tr += "<td>" + printColor(value.level7, closePrice) + "</td>";
+		            	tr += "<td>" + printColor(value.level8, closePrice) + "</td>";
+		            	tr += "<td>" + value.level9 + "</td>";
+		            	tr += "</tr>";
+		            	//只出現最後4筆，而且最前面三筆會被排除
+		            	if(index >= dataNumber-4-3) {
+		            		$("#" + dateType + "levelTable").append(tr);
+		            	}
+		            	
+		            });
+		            
+		            //C權證資料
+		            if(dateType == 'D') {
+			            $("#CWantsTable").find(".dataTr").remove();
+			            var charts = data['cwants'];
+			            $.each(charts, function(index, jsonvalue) {
+			            	var value = JSON.parse(jsonvalue.json);
+			            	var iom = value.iom;
+			            	var tr = "<tr class='dataTr'>";
+			            	tr += "<td>" + value.callput + "</td>";
+			            	tr += "<td>" + value.scode + "</td>";
+			            	tr += "<td>" + value.sname + "</td>";
+			            	tr += "<td>" + value.bid + "</td>";
+			            	tr += "<td>" + value.ask + "</td>";
+			            	tr += "<td>" + value.x + "</td>";
+			            	tr += "<td>" + iom + "</td>";
+			            	tr += "<td>" + value.days + "</td>";
+			            	tr += "<td>" + value.multi + "</td>";
+			            	tr += "<td>" + value.lvr + "</td>";
+			            	tr += "<td>" + value.biv + "</td>";
+			            	tr += "<td>" + value.siv + "</td>";
+			            	tr += "<td>" + value.bepr_ask + "</td>";
+			            	tr += "</tr>";
+			            	
+			            	$("#CWantsTable").append(tr);
+			            	
+			            });
+			            
+			            $("#PWantsTable").find(".dataTr").remove();
+			            var charts = data['pwants'];
+			            $.each(charts, function(index, jsonvalue) {
+			            	var value = JSON.parse(jsonvalue.json);
+			            	var iom = value.iom;
+			            	var tr = "<tr class='dataTr'>";
+			            	tr += "<td>" + value.callput + "</td>";
+			            	tr += "<td>" + value.scode + "</td>";
+			            	tr += "<td>" + value.sname + "</td>";
+			            	tr += "<td>" + value.bid + "</td>";
+			            	tr += "<td>" + value.ask + "</td>";
+			            	tr += "<td>" + value.x + "</td>";
+			            	tr += "<td>" + iom + "</td>";
+			            	tr += "<td>" + value.days + "</td>";
+			            	tr += "<td>" + value.multi + "</td>";
+			            	tr += "<td>" + value.lvr + "</td>";
+			            	tr += "<td>" + value.biv + "</td>";
+			            	tr += "<td>" + value.siv + "</td>";
+			            	tr += "<td>" + value.bepr_ask + "</td>";
+			            	tr += "</tr>";
+			            	
+			            	$("#PWantsTable").append(tr);
+			            	
+			            });
+		            }
+		            
+		            for(i=1;i<=15;i++) {
+		            	$("#" + dateType + i).html(data[dateType + i]);
+		            }
+		            $("#" + dateType + 17).html(data[dateType + 17]);
+		            var text16 = data[dateType + 16] + "<br/>上方 " + data[dateType + 18] + "<br/>下方 " + data[dateType + 19];
+		            $("#" + dateType + 16).html(text16);
+		        },
+		        error: function (request,error) {
+		            alert('發生錯誤，請晚點再試!'+error);
+		        },
+		        complete: function (request,textStatus) {
+		        	$('#tab4').click();
+		        }
+		    });
+		}
+		
+		var dateTypeArray = ["D", "W", "M"];
+		function printChartAll(index, id) {
+			//console.log("printChartAll " + dateTypeArray[index]);
+			return printChart(dateTypeArray[index], id).then(function(data){
+		        if (index >= dateTypeArray.length) {
+		            return;
+		        } else {
+		        	if (index+1 >= dateTypeArray.length) {
+		        		return;
+		        	}
+		            return printChartAll(index + 1, id);
+		        }
+		    });
+			
+		}
+
+
+		function queryChart() {
+			if($("#ids").val() == '') {
+				alert('請輸入要查詢的股票代碼');
+				return;
+			}
+			printChartAll(0, $("#ids").val());
+		}
+		function queryChart0() {
+			printChartAll(0, '0000');
+		}
+		function queryChartf(id) {
+			printChartAll(0, id);
+		}
+		</script>
+</body>
+
+</html>

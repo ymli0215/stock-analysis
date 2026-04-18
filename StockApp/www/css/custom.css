@@ -1,0 +1,79 @@
+/*
+為了highcharts可以在bootstrap tab中正常寬度
+*/
+.tab-content > .tab-pane,
+.pill-content > .pill-pane {
+    display: block;     
+    height: 0;          
+    overflow-y: hidden; 
+}
+
+.tab-content > .active,
+.pill-content > .active {
+    height: auto;       
+}
+
+
+.headerTr {
+	background-color: #FFF263;
+	width: 12%
+}
+
+.level1 {
+	color: #058DC7
+}
+
+.level2 {
+	color: #873322
+}
+
+.level3 {
+	color: #FFF263
+}
+
+.level4 {
+	color: #FF9655
+}
+
+.level5 {
+	color: #64E572
+}
+
+.level6 {
+	color: #4f9ab7
+}
+
+.level7 {
+	color: #CC7700
+}
+
+.level8 {
+	color: #ED561B
+}
+
+.level9 {
+	color: #50B432
+}
+
+
+
+/* Loader */
+.ui-icon-loading {
+	background: url(images/ajax-loader.gif);
+	background-size: 100px 100px;
+}
+
+.ui-loader .ui-icon-loading {
+	background-color: transparent;
+	display: block;
+	margin: 0;
+	width: 100px;
+	height: 100px;
+	padding: .0625em;
+	-webkit-border-radius: 2.25em;
+	border-radius: 2.25em;
+}
+
+.bootstrap-select.form-control:not([class*="col-"]) {
+    width: 50% !important;
+}

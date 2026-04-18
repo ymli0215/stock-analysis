@@ -1,0 +1,1052 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title></title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- MetisMenu CSS -->
+    <link href="vendor/metisMenu/metisMenu.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="css/sb-admin-2.css" rel="stylesheet">
+
+    <!-- Custom Fonts -->
+    <link href="vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    
+    <!-- Custom Fonts 
+    <link rel="stylesheet" type="text/css" href="css/stocks.css" />
+	-->
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body>
+
+    <div id="wrapper">
+
+        <!-- Navigation -->
+        <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="index.html"></a>
+            </div>
+            <!-- /.navbar-header -->
+
+            <ul class="nav navbar-top-links navbar-right">
+                
+                <!-- /.dropdown -->
+            </ul>
+            <!-- /.navbar-top-links -->
+
+            <div class="navbar-default sidebar" role="navigation">
+                <div class="sidebar-nav navbar-collapse">
+                    <ul class="nav" id="side-menu">
+                        <li>
+                        </li>
+                        
+                    </ul>
+                </div>
+                <!-- /.sidebar-collapse -->
+            </div>
+            <!-- /.navbar-static-side -->
+        </nav>
+
+        <div id="page-wrapper">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h1 class="page-header">資料更新</h1>
+                    </div>
+                    <!-- /.col-lg-12 -->
+                </div>
+                <!-- /.row -->
+                <div class="row">
+                    <div class="col-lg-12">
+                    	<div class="panel-default">
+                    		<div class="form-group" id="initStockDataForm">
+								<label>網址</label>
+								noodletw.asuscomm.com:8080/StockServer/stock/updateStockData
+								<button type="button" class="btn btn-default" onclick="doInitStockData()">更新</button>
+								<br/>
+								<div class="table-responsive">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>參數</th>
+                                            <th>值</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>更新數量</td>
+                                            <td><input class="form-control" id="dc" value="" size="50"></td>
+                                        </tr>
+                                        <tr>
+                                            <td>更新代碼</td>
+                                            <td><input class="form-control" id="si" value="" size="50"></td>
+                                        </tr>
+                                        <tr>
+                                            <td>更新類別(DWM)</td>
+                                            <td><input class="form-control" id="dataType" value="" size="50"></td>
+                                        </tr>
+                                        <tr>
+                                            <td>起始代碼</td>
+                                            <td><input class="form-control" id="startid" value="" size="50"></td>
+                                        </tr>
+                                        <tr>
+                                            <td>結束代碼</td>
+                                            <td><input class="form-control" id="endid" value="" size="50"></td>
+                                        </tr>
+                                        <tr>
+                                            <td>最後更新日期(yyy/MM/dd)</td>
+                                            <td><input class="form-control" id="beforedate" value="" size="50"></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+							</div>
+							<div class="form-group" id="initStockDataMAForm">
+								<label>網址</label>
+								noodletw.asuscomm.com:8080/StockServer/initData/initStockDataMA
+								<button type="button" class="btn btn-default" onclick="doInitStockDataMA()">更新</button>
+								<br/>
+								<div class="table-responsive">
+	                                <table class="table">
+	                                    <thead>
+	                                        <tr>
+	                                            <th>參數</th>
+	                                            <th>值</th>
+	                                        </tr>
+	                                    </thead>
+	                                    <tbody>
+	                                        <tr>
+	                                            <td>更新數量</td>
+	                                            <td><input class="form-control" id="dc" value="" size="50"></td>
+	                                        </tr>
+	                                        <tr>
+	                                            <td>更新代碼</td>
+	                                            <td><input class="form-control" id="si" value="" size="50"></td>
+	                                        </tr>
+	                                        <tr>
+	                                            <td>更新類別(DWM)</td>
+	                                            <td><input class="form-control" id="dataType" value="" size="50"></td>
+	                                        </tr>
+	                                        <tr>
+	                                            <td>起始代碼</td>
+	                                            <td><input class="form-control" id="startid" value="" size="50"></td>
+	                                        </tr>
+	                                        <tr>
+	                                            <td>結束代碼</td>
+	                                            <td><input class="form-control" id="endid" value="" size="50"></td>
+	                                        </tr>
+	                                        <tr>
+	                                            <td>最後更新日期(yyy/MM/dd)</td>
+	                                            <td><input class="form-control" id="beforedate" value="" size="50"></td>
+	                                        </tr>
+	                                    </tbody>
+	                                </table>
+	                            </div>
+							</div>
+							<div class="form-group" id="initStockPriceLevelForm">
+								<label>網址</label>
+								noodletw.asuscomm.com:8080/StockServer/initData/initStockPriceLevel
+								<button type="button" class="btn btn-default" onclick="doInitStockPriceLevel()">更新</button>
+								<br/>
+								<div class="table-responsive">
+	                                <table class="table">
+	                                    <thead>
+	                                        <tr>
+	                                            <th>參數</th>
+	                                            <th>值</th>
+	                                        </tr>
+	                                    </thead>
+	                                    <tbody>
+	                                        <tr>
+	                                            <td>更新數量</td>
+	                                            <td><input class="form-control" id="dc" value="" size="50"></td>
+	                                        </tr>
+	                                        <tr>
+	                                            <td>更新代碼</td>
+	                                            <td><input class="form-control" id="si" value="" size="50"></td>
+	                                        </tr>
+	                                        <tr>
+	                                            <td>更新類別(DWM)</td>
+	                                            <td><input class="form-control" id="dataType" value="" size="50"></td>
+	                                        </tr>
+	                                        <tr>
+	                                            <td>起始代碼</td>
+	                                            <td><input class="form-control" id="startid" value="" size="50"></td>
+	                                        </tr>
+	                                        <tr>
+	                                            <td>結束代碼</td>
+	                                            <td><input class="form-control" id="endid" value="" size="50"></td>
+	                                        </tr>
+	                                        <tr>
+	                                            <td>最後更新日期(yyy/MM/dd)</td>
+	                                            <td><input class="form-control" id="beforedate" value="" size="50"></td>
+	                                        </tr>
+	                                    </tbody>
+	                                </table>
+	                            </div>
+							</div>
+							<div class="form-group" id="initStockDataRSIForm">
+								<label>網址</label>
+								noodletw.asuscomm.com:8080/StockServer/initData/initStockDataRSI
+								<button type="button" class="btn btn-default" onclick="doInitStockDataRSI()">更新</button>
+								<br/>
+								<div class="table-responsive">
+	                                <table class="table">
+	                                    <thead>
+	                                        <tr>
+	                                            <th>參數</th>
+	                                            <th>值</th>
+	                                        </tr>
+	                                    </thead>
+	                                    <tbody>
+	                                        <tr>
+	                                            <td>更新數量</td>
+	                                            <td><input class="form-control" id="dc" value="" size="50"></td>
+	                                        </tr>
+	                                        <tr>
+	                                            <td>更新代碼</td>
+	                                            <td><input class="form-control" id="si" value="" size="50"></td>
+	                                        </tr>
+	                                        <tr>
+	                                            <td>更新類別(DWM)</td>
+	                                            <td><input class="form-control" id="dataType" value="" size="50"></td>
+	                                        </tr>
+	                                        <tr>
+	                                            <td>起始代碼</td>
+	                                            <td><input class="form-control" id="startid" value="" size="50"></td>
+	                                        </tr>
+	                                        <tr>
+	                                            <td>結束代碼</td>
+	                                            <td><input class="form-control" id="endid" value="" size="50"></td>
+	                                        </tr>
+	                                        <tr>
+	                                            <td>最後更新日期(yyy/MM/dd)</td>
+	                                            <td><input class="form-control" id="beforedate" value="" size="50"></td>
+	                                        </tr>
+	                                    </tbody>
+	                                </table>
+	                            </div>
+							</div>
+							<div class="form-group" id="initStockDataTurnForm">
+								<label>網址</label>
+								noodletw.asuscomm.com:8080/StockServer/initData/initStockDataTurn
+								<button type="button" class="btn btn-default" onclick="doInitStockDataTurn()">更新</button>
+								<br/>
+								<div class="table-responsive">
+	                                <table class="table">
+	                                    <thead>
+	                                        <tr>
+	                                            <th>參數</th>
+	                                            <th>值</th>
+	                                        </tr>
+	                                    </thead>
+	                                    <tbody>
+	                                        <tr>
+	                                            <td>更新數量</td>
+	                                            <td><input class="form-control" id="dc" value="" size="50"></td>
+	                                        </tr>
+	                                        <tr>
+	                                            <td>更新代碼</td>
+	                                            <td><input class="form-control" id="si" value="" size="50"></td>
+	                                        </tr>
+	                                        <tr>
+	                                            <td>更新類別(DWM)</td>
+	                                            <td><input class="form-control" id="dataType" value="" size="50"></td>
+	                                        </tr>
+	                                        <tr>
+	                                            <td>起始代碼</td>
+	                                            <td><input class="form-control" id="startid" value="" size="50"></td>
+	                                        </tr>
+	                                        <tr>
+	                                            <td>結束代碼</td>
+	                                            <td><input class="form-control" id="endid" value="" size="50"></td>
+	                                        </tr>
+	                                        <tr>
+	                                            <td>最後更新日期(yyy/MM/dd)</td>
+	                                            <td><input class="form-control" id="beforedate" value="" size="50"></td>
+	                                        </tr>
+	                                    </tbody>
+	                                </table>
+	                            </div>
+							</div>
+							<div class="form-group" id="initStockGapsForm">
+								<label>網址</label>
+								noodletw.asuscomm.com:8080/StockServer/initData/initStockGaps
+								<button type="button" class="btn btn-default" onclick="initStockGaps()">更新</button>
+								<br/>
+								<div class="table-responsive">
+	                                <table class="table">
+	                                    <thead>
+	                                        <tr>
+	                                            <th>參數</th>
+	                                            <th>值</th>
+	                                        </tr>
+	                                    </thead>
+	                                    <tbody>
+	                                        <tr>
+	                                            <td>更新代碼</td>
+	                                            <td><input class="form-control" id="si" value="" size="50"></td>
+	                                        </tr>
+	                                        <tr>
+	                                            <td>更新類別(DWM)</td>
+	                                            <td><input class="form-control" id="dataType" value="" size="50"></td>
+	                                        </tr>
+	                                        <tr>
+	                                            <td>起始代碼</td>
+	                                            <td><input class="form-control" id="startid" value="" size="50"></td>
+	                                        </tr>
+	                                        <tr>
+	                                            <td>結束代碼</td>
+	                                            <td><input class="form-control" id="endid" value="" size="50"></td>
+	                                        </tr>
+	                                    </tbody>
+	                                </table>
+	                            </div>
+							</div>
+							<div class="form-group" id="initOptionOpenForm">
+								<label>網址</label>
+								noodletw.asuscomm.com:8080/StockServer/initData/initOptionOpen
+								<button type="button" class="btn btn-default" onclick="initOptionOpen()">更新</button>
+								<br/>
+								<div class="table-responsive">
+	                                <table class="table">
+	                                    <thead>
+	                                        <tr>
+	                                            <th>參數</th>
+	                                            <th>值</th>
+	                                        </tr>
+	                                    </thead>
+	                                    <tbody>
+	                                        <tr>
+	                                            <td>更新數量</td>
+	                                            <td><input class="form-control" id="dc" value="" size="50"></td>
+	                                        </tr>
+	                                        <tr>
+	                                            <td>開始日期(yyy/MM/dd)</td>
+	                                            <td><input class="form-control" id="date" value="" size="50"></td>
+	                                        </tr>
+	                                    </tbody>
+	                                </table>
+	                            </div>
+							</div>
+							<div class="form-group" id="initOptionOpen2Form">
+								<label>網址</label>
+								noodletw.asuscomm.com:8080/StockServer/initData/initOptionOpen2
+								<button type="button" class="btn btn-default" onclick="initOptionOpen2()">更新</button>
+								<br/>
+								<div class="table-responsive">
+	                                <table class="table">
+	                                    <thead>
+	                                        <tr>
+	                                            <th>參數</th>
+	                                            <th>值</th>
+	                                        </tr>
+	                                    </thead>
+	                                    <tbody>
+	                                        <tr>
+	                                            <td>更新數量</td>
+	                                            <td><input class="form-control" id="dc" value="" size="50"></td>
+	                                        </tr>
+	                                        <tr>
+	                                            <td>開始日期(yyy/MM/dd)</td>
+	                                            <td><input class="form-control" id="date" value="" size="50"></td>
+	                                        </tr>
+	                                    </tbody>
+	                                </table>
+	                            </div>
+							</div>
+							<div class="form-group" id="initFutureOpen2Form">
+								<label>網址</label>
+								noodletw.asuscomm.com:8080/StockServer/initData/initFutureOpen2
+								<button type="button" class="btn btn-default" onclick="initFutureOpen2()">更新</button>
+								<br/>
+								<div class="table-responsive">
+	                                <table class="table">
+	                                    <thead>
+	                                        <tr>
+	                                            <th>參數</th>
+	                                            <th>值</th>
+	                                        </tr>
+	                                    </thead>
+	                                    <tbody>
+	                                        <tr>
+	                                            <td>更新數量</td>
+	                                            <td><input class="form-control" id="dc" value="" size="50"></td>
+	                                        </tr>
+	                                        <tr>
+	                                            <td>開始日期(yyy/MM/dd)</td>
+	                                            <td><input class="form-control" id="date" value="" size="50"></td>
+	                                        </tr>
+	                                    </tbody>
+	                                </table>
+	                            </div>
+							</div>
+							<div class="form-group" id="initCashFlowForm">
+								<label>網址</label>
+								noodletw.asuscomm.com:8080/StockServer/initData/initCashFlow
+								<button type="button" class="btn btn-default" onclick="initCashFlow()">更新</button>
+								<br/>
+								<div class="table-responsive">
+	                                <table class="table">
+	                                    <thead>
+	                                        <tr>
+	                                            <th>參數</th>
+	                                            <th>值</th>
+	                                        </tr>
+	                                    </thead>
+	                                    <tbody>
+	                                        <tr>
+	                                            <td>更新代碼</td>
+	                                            <td><input class="form-control" id="si" value="" size="50"></td>
+	                                        </tr>
+	                                        <tr>
+	                                            <td>更新類別(YQ)</td>
+	                                            <td><input class="form-control" id="dataType" value="" size="50"></td>
+	                                        </tr>
+	                                        <tr>
+	                                            <td>起始代碼</td>
+	                                            <td><input class="form-control" id="startid" value="" size="50"></td>
+	                                        </tr>
+	                                        <tr>
+	                                            <td>結束代碼</td>
+	                                            <td><input class="form-control" id="endid" value="" size="50"></td>
+	                                        </tr>
+	                                    </tbody>
+	                                </table>
+	                            </div>
+							</div>
+							<div class="form-group" id="initFinanAllForm">
+								<label>網址</label>
+								noodletw.asuscomm.com:8080/StockServer/initData/initFinanAll
+								<button type="button" class="btn btn-default" onclick="initFinanAll()">更新</button>
+								<br/>
+								<div class="table-responsive">
+	                                <table class="table">
+	                                    <thead>
+	                                        <tr>
+	                                            <th>參數</th>
+	                                            <th>值</th>
+	                                        </tr>
+	                                    </thead>
+	                                    <tbody>
+	                                        <tr>
+	                                            <td>更新代碼</td>
+	                                            <td><input class="form-control" id="si" value="" size="50"></td>
+	                                        </tr>
+	                                        <tr>
+	                                            <td>更新類別(YQ)</td>
+	                                            <td><input class="form-control" id="dataType" value="" size="50"></td>
+	                                        </tr>
+	                                        <tr>
+	                                            <td>更新起始時間</td>
+	                                            <td><input class="form-control" id="date" value="" size="50"></td>
+	                                        </tr>
+	                                        <tr>
+	                                            <td>起始代碼</td>
+	                                            <td><input class="form-control" id="startid" value="" size="50"></td>
+	                                        </tr>
+	                                        <tr>
+	                                            <td>結束代碼</td>
+	                                            <td><input class="form-control" id="endid" value="" size="50"></td>
+	                                        </tr>
+	                                    </tbody>
+	                                </table>
+	                            </div>
+							</div>
+							<div class="form-group" id="initFinanRatioForm">
+							<label>網址</label>
+							noodletw.asuscomm.com:8080/StockServer/initData/initFinanRatio
+							<button type="button" class="btn btn-default" onclick="initFinanRatio()">更新</button>
+							<br/>
+							<div class="table-responsive">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>參數</th>
+                                            <th>值</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>更新代碼</td>
+                                            <td><input class="form-control" id="si" value="" size="50"></td>
+                                        </tr>
+                                        <tr>
+                                            <td>更新類別(YQ)</td>
+                                            <td><input class="form-control" id="dataType" value="" size="50"></td>
+                                        </tr>
+                                        <tr>
+                                            <td>更新起始時間</td>
+                                            <td><input class="form-control" id="date" value="" size="50"></td>
+                                        </tr>
+                                        <tr>
+                                            <td>起始代碼</td>
+                                            <td><input class="form-control" id="startid" value="" size="50"></td>
+                                        </tr>
+                                        <tr>
+                                            <td>結束代碼</td>
+                                            <td><input class="form-control" id="endid" value="" size="50"></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+						</div>
+							
+							<div class="form-group" id="initFinanRatio2Form">
+							<label>網址</label>
+							noodletw.asuscomm.com:8080/StockServer/initData/initFinanRatio2
+							<button type="button" class="btn btn-default" onclick="initFinanRatio2()">更新</button>
+							<br/>
+							<div class="table-responsive">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>參數</th>
+                                            <th>值</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>更新代碼</td>
+                                            <td><input class="form-control" id="si" value="" size="50"></td>
+                                        </tr>
+                                        <tr>
+                                            <td>更新類別(YQ)</td>
+                                            <td><input class="form-control" id="dataType" value="" size="50"></td>
+                                        </tr>
+                                        <tr>
+                                            <td>更新起始時間</td>
+                                            <td><input class="form-control" id="date" value="" size="50"></td>
+                                        </tr>
+                                        <tr>
+                                            <td>起始代碼</td>
+                                            <td><input class="form-control" id="startid" value="" size="50"></td>
+                                        </tr>
+                                        <tr>
+                                            <td>結束代碼</td>
+                                            <td><input class="form-control" id="endid" value="" size="50"></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+						</div>
+							<div class="form-group" id="initBalanceSheetForm">
+								<label>網址</label>
+								noodletw.asuscomm.com:8080/StockServer/initData/initBalanceSheet
+								<button type="button" class="btn btn-default" onclick="initBalanceSheet()">更新</button>
+								<br/>
+								<div class="table-responsive">
+	                                <table class="table">
+	                                    <thead>
+	                                        <tr>
+	                                            <th>參數</th>
+	                                            <th>值</th>
+	                                        </tr>
+	                                    </thead>
+	                                    <tbody>
+	                                        <tr>
+	                                            <td>更新代碼</td>
+	                                            <td><input class="form-control" id="si" value="" size="50"></td>
+	                                        </tr>
+	                                        <tr>
+	                                            <td>更新類別(YQ)</td>
+	                                            <td><input class="form-control" id="dataType" value="" size="50"></td>
+	                                        </tr>
+	                                        <tr>
+	                                            <td>更新起始時間</td>
+	                                            <td><input class="form-control" id="date" value="" size="50"></td>
+	                                        </tr>
+	                                        <tr>
+	                                            <td>起始代碼</td>
+	                                            <td><input class="form-control" id="startid" value="" size="50"></td>
+	                                        </tr>
+	                                        <tr>
+	                                            <td>結束代碼</td>
+	                                            <td><input class="form-control" id="endid" value="" size="50"></td>
+	                                        </tr>
+	                                    </tbody>
+	                                </table>
+	                            </div>
+							</div>
+							<div class="form-group" id="deleteWorngTimeStockDatasForm">
+								<label>網址</label>
+								noodletw.asuscomm.com:8080/StockServer/stock/deleteWorngTimeStockDatas
+								<button type="button" class="btn btn-default" onclick="deleteWorngTimeStockDatas()">刪除資料</button>
+							</div>
+							<div class="form-group" id="deleteWorngTimeStockDatasForm">
+								<label>網址</label>
+								noodletw.asuscomm.com:8080/StockServer/stock/deleteWorngTimeStockDatasMA
+								<button type="button" class="btn btn-default" onclick="deleteWorngTimeStockDatasMA()">刪除資料</button>
+							</div>
+							<div class="form-group" id="updateStockExcludeForm">
+								<label>網址</label>
+								noodletw.asuscomm.com:8080/StockServer/stockExclude/updateStockExclude
+								<button type="button" class="btn btn-default" onclick="updateStockExclude()">更新除權息資料</button>
+							</div>
+                    	</div>
+                    </div>
+                    <!-- /.col-lg-12 -->
+                </div>
+                <!-- /.row -->
+            </div>
+            <!-- /.container-fluid -->
+        </div>
+        <!-- /#page-wrapper -->
+
+    </div>
+    <!-- /#wrapper -->
+
+    <!-- jQuery -->
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/jquery/jquery.blockUI.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+
+    <!-- Metis Menu Plugin JavaScript -->
+    <script src="vendor/metisMenu/metisMenu.min.js"></script>
+    
+    <!-- Custom app JavaScript -->
+    <script src="js/stockapp.js"></script>
+
+    <!-- Custom Theme JavaScript -->
+    <script src="js/sb-admin-2.js"></script>
+
+    <!-- highcharts JavaScript -->
+    <script src="vendor/highcharts/highstock.js"></script>
+    <script src="vendor/highcharts/exporting.js"></script>
+
+	<script>
+	
+	function updateStockExclude() {
+		var url = "https://stock.bignoodle.net/StockServer/stockExclude/updateStockExclude";
+		$.ajax({
+	        url: url,
+	        complete: function (request,textStatus) {
+	        	//loading('hide', 1000);
+	        }
+	    });
+	}
+
+
+	function deleteWorngTimeStockDatasMA() {
+		var url = "https://stock.bignoodle.net/StockServer/stock/deleteWorngTimeStockDatasMA";
+		$.ajax({
+	        url: url,
+	        complete: function (request,textStatus) {
+	        	//loading('hide', 1000);
+	        }
+	    });
+	}
+
+	function deleteWorngTimeStockDatas() {
+		var url = "https://stock.bignoodle.net/StockServer/stock/deleteWorngTimeStockDatas";
+		$.ajax({
+	        url: url,
+	        complete: function (request,textStatus) {
+	        	//loading('hide', 1000);
+	        }
+	    });
+	}
+
+	function initStockData0000() {
+		var url = "https://stock.bignoodle.net/StockServer/initData/initStockData0000";
+		$.ajax({
+	        url: url,
+	        complete: function (request,textStatus) {
+	        	//loading('hide', 1000);
+	        }
+	    });
+	}
+	
+	function initOptionOpen() {
+		var form = $("#initOptionOpenForm");
+		var url = "https://stock.bignoodle.net/StockServer/initData/initOptionOpen";
+		url += "?dc=" + form.find("#dc").val();
+		url += "&date=" + form.find("#date").val();
+	     
+		$.ajax({
+	        url: url,
+	        success: function (data) {
+	            alert("已送出");
+	        },
+	        error: function (request,error) {
+	            alert('發生錯誤，請晚點再試!'+error);
+	        },
+	        complete: function (request,textStatus) {
+	        	//loading('hide', 1000);
+	        }
+	    });
+	}
+	
+	function initCashFlow() {
+		var form = $("#initCashFlowForm");
+		var url = "https://stock.bignoodle.net/StockServer/initData/initCashFlow";
+		url += "?id=" + form.find("#si").val();
+		url += "&type=" + form.find("#dataType").val();
+		url += "&startid=" + form.find("#startid").val();
+		url += "&endid=" + form.find("#endid").val();
+		url += "&date=" + form.find("#date").val();
+	     
+		$.ajax({
+	        url: url,
+	        dataType: "jsonp",
+	        jsonpCallback: "jsonp",
+	        success: function (data) {
+	            alert("已送出");
+	        },
+	        error: function (request,error) {
+	            alert('發生錯誤，請晚點再試!'+error);
+	        },
+	        complete: function (request,textStatus) {
+	        	//loading('hide', 1000);
+	        }
+	    });
+	}
+	
+	function initBalanceSheet() {
+		var form = $("#initBalanceSheetForm");
+		var url = "https://stock.bignoodle.net/StockServer/initData/initBalanceSheet";
+		url += "?id=" + form.find("#si").val();
+		url += "&type=" + form.find("#dataType").val();
+		url += "&startid=" + form.find("#startid").val();
+		url += "&endid=" + form.find("#endid").val();
+		url += "&date=" + form.find("#date").val();
+	     
+		$.ajax({
+	        url: url,
+	        dataType: "jsonp",
+	        jsonpCallback: "jsonp",
+	        success: function (data) {
+	            alert("已送出");
+	        },
+	        error: function (request,error) {
+	            alert('發生錯誤，請晚點再試!'+error);
+	        },
+	        complete: function (request,textStatus) {
+	        	//loading('hide', 1000);
+	        }
+	    });
+	}
+	
+	function initFinanRatio() {
+		var form = $("#initFinanRatioForm");
+		var url = "https://stock.bignoodle.net/StockServer/initData/initFinanRatio";
+		url += "?id=" + form.find("#si").val();
+		url += "&type=" + form.find("#dataType").val();
+		url += "&startid=" + form.find("#startid").val();
+		url += "&endid=" + form.find("#endid").val();
+		url += "&date=" + form.find("#date").val();
+	     
+		$.ajax({
+	        url: url,
+	        dataType: "jsonp",
+	        jsonpCallback: "jsonp",
+	        success: function (data) {
+	            alert("已送出");
+	        },
+	        error: function (request,error) {
+	            alert('發生錯誤，請晚點再試!'+error);
+	        },
+	        complete: function (request,textStatus) {
+	        	//loading('hide', 1000);
+	        }
+	    });
+	}
+
+	
+
+	
+	function initFinanRatio2() {
+		var form = $("#initFinanRatio2Form");
+		var url = "https://stock.bignoodle.net/StockServer/initData/initFinanRatio2";
+		url += "?id=" + form.find("#si").val();
+		url += "&type=" + form.find("#dataType").val();
+		url += "&startid=" + form.find("#startid").val();
+		url += "&endid=" + form.find("#endid").val();
+		url += "&date=" + form.find("#date").val();
+	     
+		$.ajax({
+	        url: url,
+	        dataType: "jsonp",
+	        jsonpCallback: "jsonp",
+	        success: function (data) {
+	            alert("已送出");
+	        },
+	        error: function (request,error) {
+	            alert('發生錯誤，請晚點再試!'+error);
+	        },
+	        complete: function (request,textStatus) {
+	        	//loading('hide', 1000);
+	        }
+	    });
+	}
+	
+	function initFinanAll() {
+		var form = $("#initFinanAllForm");
+		var url = "https://stock.bignoodle.net/StockServer/initData/initFinanAll";
+		url += "?id=" + form.find("#si").val();
+		url += "&type=" + form.find("#dataType").val();
+		url += "&startid=" + form.find("#startid").val();
+		url += "&endid=" + form.find("#endid").val();
+		url += "&date=" + form.find("#date").val();
+	     
+		$.ajax({
+	        url: url,
+	        dataType: "jsonp",
+	        jsonpCallback: "jsonp",
+	        success: function (data) {
+	            alert("已送出");
+	        },
+	        error: function (request,error) {
+	            alert('發生錯誤，請晚點再試!'+error);
+	        },
+	        complete: function (request,textStatus) {
+	        	//loading('hide', 1000);
+	        }
+	    });
+	}
+	
+	function initFutureOpen2() {
+		var form = $("#initFutureOpen2Form");
+		var url = "https://stock.bignoodle.net/StockServer/initData/initFutureOpen2";
+		url += "?dc=" + form.find("#dc").val();
+		url += "&date=" + form.find("#date").val();
+	     
+		$.ajax({
+	        url: url,
+	        success: function (data) {
+	            alert("已送出");
+	        },
+	        error: function (request,error) {
+	            alert('發生錯誤，請晚點再試!'+error);
+	        },
+	        complete: function (request,textStatus) {
+	        	//loading('hide', 1000);
+	        }
+	    });
+	}
+	
+	function initOptionOpen2() {
+		var form = $("#initOptionOpen2Form");
+		var url = "https://stock.bignoodle.net/StockServer/initData/initOptionOpen2";
+		url += "?dc=" + form.find("#dc").val();
+		url += "&date=" + form.find("#date").val();
+	     
+		$.ajax({
+	        url: url,
+	        success: function (data) {
+	            alert("已送出");
+	        },
+	        error: function (request,error) {
+	            alert('發生錯誤，請晚點再試!'+error);
+	        },
+	        complete: function (request,textStatus) {
+	        	//loading('hide', 1000);
+	        }
+	    });
+	}
+
+	
+	function initStockGaps() {
+		var form = $("#initStockGapsForm");
+		var url = "https://stock.bignoodle.net/StockServer/initData/initStockGaps";
+		url += "?si=" + form.find("#si").val();
+		url += "&dataType=" + form.find("#dataType").val();
+		url += "&startid=" + form.find("#startid").val();
+		url += "&endid=" + form.find("#endid").val();
+	     
+		$.ajax({
+	        url: url,
+	        dataType: "jsonp",
+	        jsonpCallback: "jsonp",
+	        success: function (data) {
+	            alert("已送出");
+	        },
+	        error: function (request,error) {
+	            alert('發生錯誤，請晚點再試!'+error);
+	        },
+	        complete: function (request,textStatus) {
+	        	//loading('hide', 1000);
+	        }
+	    });
+	}
+
+	
+	function doInitStockData() {
+		var form = $("#initStockDataForm");
+		var url = "https://stock.bignoodle.net/StockServer/stock/updateStockData";
+		url += "?dc=" + form.find("#dc").val();
+		url += "&si=" + form.find("#si").val();
+		url += "&dataType=" + form.find("#dataType").val();
+		url += "&startid=" + form.find("#startid").val();
+		url += "&endid=" + form.find("#endid").val();
+		url += "&beforedate=" + form.find("#beforedate").val();
+	     
+		$.ajax({
+	        url: url,
+	        dataType: "jsonp",
+	        jsonpCallback: "jsonp",
+	        success: function (data) {
+	            alert("已送出");
+	        },
+	        error: function (request,error) {
+	            alert('發生錯誤，請晚點再試!'+error);
+	        },
+	        complete: function (request,textStatus) {
+	        	//loading('hide', 1000);
+	        }
+	    });
+	}
+	
+	$( document ).ready(function() {
+		$(document).on('change', 'input[name="switch"]', function(){
+			if($("#on").prop('checked')) {
+				queryStart = 1;
+			}
+			else {
+				queryStart = 0;
+	    		clearTimeout(timeoutSch);
+			}
+
+	        if(queryStart == 1) {
+	        	queryData();
+	        }  
+	    });
+	});
+	
+
+	function doInitStockPriceLevel() {
+		var form = $("#initStockPriceLevelForm");
+		var url = "https://stock.bignoodle.net/StockServer/initData/initStockPriceLevel";
+		url += "?dc=" + form.find("#dc").val();
+		url += "&si=" + form.find("#si").val();
+		url += "&dataType=" + form.find("#dataType").val();
+		url += "&startid=" + form.find("#startid").val();
+		url += "&endid=" + form.find("#endid").val();
+		url += "&beforedate=" + form.find("#beforedate").val();
+	     
+		$.ajax({
+	        url: url,
+	        dataType: "jsonp",
+	        jsonpCallback: "jsonp",
+	        success: function (data) {
+	            alert("已送出");
+	        },
+	        error: function (request,error) {
+	            alert('發生錯誤，請晚點再試!'+error);
+	        },
+	        complete: function (request,textStatus) {
+	        	//loading('hide', 1000);
+	        }
+	    });
+	}
+	
+
+	function doInitStockDataMA() {
+		var form = $("#initStockDataMAForm");
+		var url = "https://stock.bignoodle.net/StockServer/initData/initStockDataMA";
+		url += "?dc=" + form.find("#dc").val();
+		url += "&si=" + form.find("#si").val();
+		url += "&dataType=" + form.find("#dataType").val();
+		url += "&startid=" + form.find("#startid").val();
+		url += "&endid=" + form.find("#endid").val();
+		url += "&beforedate=" + form.find("#beforedate").val();
+	     
+		$.ajax({
+	        url: url,
+	        dataType: "jsonp",
+	        jsonpCallback: "jsonp",
+	        success: function (data) {
+	            alert("已送出");
+	        },
+	        error: function (request,error) {
+	            alert('發生錯誤，請晚點再試!'+error);
+	        },
+	        complete: function (request,textStatus) {
+	        	//loading('hide', 1000);
+	        }
+	    });
+	}
+	function doInitStockDataRSI() {
+		var form = $("#initStockDataRSIForm");
+		var url = "https://stock.bignoodle.net/StockServer/initData/initStockDataRSI";
+		url += "?dc=" + form.find("#dc").val();
+		url += "&si=" + form.find("#si").val();
+		url += "&dataType=" + form.find("#dataType").val();
+		url += "&startid=" + form.find("#startid").val();
+		url += "&endid=" + form.find("#endid").val();
+		url += "&beforedate=" + form.find("#beforedate").val();
+	     
+		$.ajax({
+	        url: url,
+	        dataType: "jsonp",
+	        jsonpCallback: "jsonp",
+	        success: function (data) {
+	            alert("已送出");
+	        },
+	        error: function (request,error) {
+	            alert('發生錯誤，請晚點再試!'+error);
+	        },
+	        complete: function (request,textStatus) {
+	        	//loading('hide', 1000);
+	        }
+	    });
+	}
+	
+
+	function doInitStockDataTurn() {
+		var form = $("#initStockDataTurnForm");
+		var url = "https://stock.bignoodle.net/StockServer/initData/initStockDataTurn";
+		url += "?dc=" + form.find("#dc").val();
+		url += "&si=" + form.find("#si").val();
+		url += "&dataType=" + form.find("#dataType").val();
+		url += "&startid=" + form.find("#startid").val();
+		url += "&endid=" + form.find("#endid").val();
+		url += "&beforedate=" + form.find("#beforedate").val();
+	     
+		$.ajax({
+	        url: url,
+	        dataType: "jsonp",
+	        jsonpCallback: "jsonp",
+	        success: function (data) {
+	            alert("已送出");
+	        },
+	        error: function (request,error) {
+	            alert('發生錯誤，請晚點再試!'+error);
+	        },
+	        complete: function (request,textStatus) {
+	        	//loading('hide', 1000);
+	        }
+	    });
+	}
+	
+	</script>
+</body>
+
+</html>
