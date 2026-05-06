@@ -72,8 +72,12 @@ public class Stocks extends BaseEntity {
 	/** 產品 */
 	@Column(name = "products", length = 500)
 	private String products;
-	
-	
+
+	/** 市場別：TW=台股, JP=日股, US=美股 */
+	@Column(name = "market", nullable = false, length = 5)
+	private String market = "TW";
+
+
 
 	public Stocks() {
 	}
@@ -204,6 +208,14 @@ public class Stocks extends BaseEntity {
 
 	public void setCapital(BigDecimal capital) {
 		this.capital = capital;
+	}
+
+	public String getMarket() {
+		return market;
+	}
+
+	public void setMarket(String market) {
+		this.market = market;
 	}
 
 }

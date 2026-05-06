@@ -31,6 +31,10 @@ server:
   servlet:
     context-path: /StockServer
 
+jp-fetcher:
+  url: http://stock-jp-api:8090/api/fetch/jp
+  timeout-seconds: 30
+
 logging:
   level:
     root: INFO

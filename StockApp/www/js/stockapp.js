@@ -10,17 +10,38 @@ function initIds(id) {
 		dataType: "jsonp",
 		jsonpCallback: "call",
         success: function (data) {
-        	for(var i=0;i<data.length;i++) {
-        		$("#"+id).append('<option data-subtext="' + data[i].stockName + '">' + data[i].stockId + '</option>');
+        	var groups = { TW: [], JP: [], US: [] };
+        	for (var i = 0; i < data.length; i++) {
+        		var m = data[i].market || 'TW';
+        		if (!groups[m]) groups[m] = [];
+        		groups[m].push(data[i]);
         	}
-        	
-        	$('#' + id).selectpicker();
+        	var marketOrder = [
+        		{ key: 'TW', label: '台股' },
+        		{ key: 'JP', label: '日股' },
+        		{ key: 'US', label: '美股' }
+        	];
+        	var $sel = $('#' + id);
+        	for (var g = 0; g < marketOrder.length; g++) {
+        		var mKey = marketOrder[g].key;
+        		var mStocks = groups[mKey];
+        		if (!mStocks || mStocks.length === 0) continue;
+        		var $grp = $('<optgroup>').attr('label', marketOrder[g].label);
+        		for (var j = 0; j < mStocks.length; j++) {
+        			var sid = mStocks[j].stockId;
+        			var sname = mStocks[j].stockName;
+        			var displayId = (mKey === 'JP') ? sid.replace(/\.T$/i, '') : sid;
+        			$grp.append('<option value="' + sid + '" data-subtext="' + sname + '">' + displayId + '</option>');
+        		}
+        		$sel.append($grp);
+        	}
+        	$sel.selectpicker();
         },
 		error: function(jqXHR, textStatus, errorThrown) {
 		    console.error('JSONP 請求失敗:', textStatus, errorThrown);
 		},
         complete: function (request,textStatus) {
-        	
+
         }
     });
 }

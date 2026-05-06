@@ -19,6 +19,9 @@ public class StockInfo implements Serializable {
 
 	/** 股票類別 */
 	private String stockType;
+
+	/** 市場別：TW=台股, JP=日股, US=美股 */
+	private String market;
 	
 	/** 標的代碼 */
     private String underlyingCode;
@@ -67,5 +70,13 @@ public class StockInfo implements Serializable {
 
 	public void setUnderlyingCode(String underlyingCode) {
 		this.underlyingCode = underlyingCode;
+	}
+
+	public String getMarket() {
+		return market;
+	}
+
+	public void setMarket(String market) {
+		this.market = market;
 	}
 }

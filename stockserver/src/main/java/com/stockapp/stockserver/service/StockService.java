@@ -34,6 +34,8 @@ import com.stockapp.stockserver.enums.StockDataTypeType;
 import com.stockapp.stockserver.model.CallbackResult;
 import com.stockapp.stockserver.model.ChartData;
 import com.stockapp.stockserver.model.TurnKData;
+import com.stockapp.stockserver.entity.StockDataEMA;
+import com.stockapp.stockserver.repo.StockDataEMARepository;
 import com.stockapp.stockserver.repo.StockDataMARepository;
 import com.stockapp.stockserver.repo.StockDataTurnRepository;
 import com.stockapp.stockserver.repo.StockPriceLevelRepository;
@@ -52,10 +54,16 @@ public class StockService extends AbstractService {
 
     @Autowired
     private StockCommonService stockCommonService;
+
+    @Autowired
+    private JpDataFetchService jpDataFetchService;
+
     @Autowired
     private StockDataTurnRepository stockDataTurnRepository;
     @Autowired
     private StockDataMARepository stockDataMARepository;
+    @Autowired
+    private StockDataEMARepository stockDataEMARepository;
     @Autowired
     private StockPriceLevelRepository stockPriceLevelRepository;
     @Autowired
@@ -76,17 +84,18 @@ public class StockService extends AbstractService {
                 dataType = StockDataTypeType.DAYILY;
             }
 
-            // 交易日就去更新最新資料
-//            if (bizDateService.isBizDate(LocalDateTime.now(ZoneId.of("Asia/Taipei")).toLocalDate())) {
-                // 先更新最新資料
+            // JP 股票 → 呼叫 Python FastAPI 補資料；其他 → 維持 histock 流程
+            if ("JP".equals(stockOptional.get().getMarket())) {
+                jpDataFetchService.ensureData(stockId, dataType.getCode());
+            } else {
                 stockCommonService.updateStockData(stockId, dataType, dataCount).get();
+            }
 
-                List<Future<CallbackResult>> result2 = new ArrayList<Future<CallbackResult>>();
-                result2.add(stockCommonService.updateDataTurn(stockId, dataType.getCode(), dataCount));
-                for (Future<CallbackResult> r : result2) {
-                    r.get();
-                }
-//            }
+            List<Future<CallbackResult>> result2 = new ArrayList<Future<CallbackResult>>();
+            result2.add(stockCommonService.updateDataTurn(stockId, dataType.getCode(), dataCount));
+            for (Future<CallbackResult> r : result2) {
+                r.get();
+            }
             List<TurnKData> charts = new ArrayList<TurnKData>();
 
             // 資料第一筆為最新資料
@@ -334,6 +343,7 @@ public class StockService extends AbstractService {
                 info.setStockId(id);
                 info.setStockName(stock.get().getStockName());
                 info.setStockType("stock");
+                info.setMarket(stock.get().getMarket());
             } else {
                 Optional<StockWants> wants = stockWantsRepository.findById(id);
                 if (wants.isPresent()) {
@@ -352,7 +362,17 @@ public class StockService extends AbstractService {
     }
 
     public List<Stocks> findStocks() {
-        return stocksRepository.findAll();
+        List<Stocks> all = stocksRepository.findAll();
+        java.util.Map<String, Integer> marketOrder = new java.util.HashMap<>();
+        marketOrder.put("TW", 0);
+        marketOrder.put("JP", 1);
+        marketOrder.put("US", 2);
+        all.sort((a, b) -> {
+            int ao = marketOrder.getOrDefault(a.getMarket(), 99);
+            int bo = marketOrder.getOrDefault(b.getMarket(), 99);
+            return Integer.compare(ao, bo);
+        });
+        return all;
     }
 
     public @ResponseBody Map<String, Object> queryStockTurnData(String stockId, String stockDataType, Integer dataCount) {
@@ -369,10 +389,14 @@ public class StockService extends AbstractService {
                 dataType = StockDataTypeType.DAYILY;
             }
 
-            // 交易日就去更新最新資料
-//            if (bizDateService.isBizDate(LocalDateTime.now(ZoneId.of("Asia/Taipei")).toLocalDate())) {
+            // JP 股票 → 呼叫 Python FastAPI 補資料；其他 → 維持 histock 流程
+            Optional<Stocks> stockOpt = stocksRepository.findById(stockId);
+            if (stockOpt.isPresent() && "JP".equals(stockOpt.get().getMarket())) {
+                jpDataFetchService.ensureData(stockId, dataType.getCode());
+            } else {
                 forceUpdateStockDatas(stockId, dataType, dataCount);
-//            }
+            }
+
             List<ChartData> charts = new ArrayList<ChartData>();
 
             // 資料第一筆為最新資料
@@ -845,6 +869,91 @@ public class StockService extends AbstractService {
         }
 
         logger.info("=== All stock data update finished ===");
+    }
+
+    public Map<String, Object> queryStockData(String stockId, String dataTypeString, Integer dataCount) {
+        try {
+            if (StringUtils.isBlank(stockId)) {
+                return null;
+            }
+            if (dataCount == null) {
+                dataCount = 130;
+            }
+            StockDataTypeType dataType = StockDataTypeType.find(dataTypeString);
+            if (dataType.isUNKNOWN()) {
+                dataType = StockDataTypeType.DAYILY;
+            }
+
+            Optional<Stocks> stockOpt = stocksRepository.findById(stockId);
+            if (stockOpt.isPresent() && "JP".equals(stockOpt.get().getMarket())) {
+                jpDataFetchService.ensureData(stockId, dataType.getCode());
+            } else {
+                forceUpdateStockDatas(stockId, dataType, dataCount);
+            }
+
+            int findCount = dataCount < 15 ? 15 : dataCount;
+            Optional<Stocks> stockFinal = stocksRepository.findById(stockId);
+            if (stockFinal.isEmpty()) {
+                return null;
+            }
+            Stocks stock = stockFinal.get();
+            List<StockData> datas = stockDataRepository.findDataDesc(stockId, dataType.getCode(), findCount);
+
+            if (datas == null || datas.isEmpty()) {
+                forceUpdateStockDatas(stockId, dataType, dataCount);
+                datas = stockDataRepository.findDataDesc(stockId, dataType.getCode(), findCount);
+            }
+
+            List<ChartData> charts = new ArrayList<>();
+            for (int i = 0; i < datas.size(); i++) {
+                ChartData chart = new ChartData();
+                StockData data = datas.get(i);
+
+                Optional<StockDataMA> maOptional = stockDataMARepository.findById(data.getId());
+                Optional<StockDataEMA> emaOptional = stockDataEMARepository.findById(data.getId());
+
+                BeanUtils.copyProperties(chart, data);
+                if (maOptional.isPresent()) {
+                    BeanUtils.copyProperties(chart, maOptional.get());
+                }
+                if (emaOptional.isPresent()) {
+                    BeanUtils.copyProperties(chart, emaOptional.get());
+                }
+                chart.setStockId(stock.getStockId());
+                chart.setStockName(stock.getStockName());
+                chart.setDataTime(data.getId().getDataTime());
+                chart.setDataType(dataType.getCode());
+                chart.setDataString(data.getDateString());
+
+                charts.add(0, chart);
+            }
+
+            Map<String, Object> result = new HashMap<>();
+            List<List<Object>> sdatas = new ArrayList<>();
+            List<List<Object>> vols = new ArrayList<>();
+            for (ChartData chart : charts) {
+                List<Object> sdata = new ArrayList<>();
+                sdata.add(chart.getDataTime());
+                sdata.add(chart.getOpen());
+                sdata.add(chart.getHigh());
+                sdata.add(chart.getLow());
+                sdata.add(chart.getClose());
+                sdatas.add(sdata);
+
+                List<Object> vol = new ArrayList<>();
+                vol.add(chart.getDataTime());
+                vol.add(chart.getVolume());
+                vols.add(vol);
+            }
+            result.put("charts", charts);
+            result.put("sdata", sdatas);
+            result.put("vols", vols);
+            result.put("sname", stock.getStockName());
+            return result;
+        } catch (Exception e) {
+            logger.error("queryStockData fail : ", e);
+        }
+        return null;
     }
 
     private void forceUpdateStockDatas(String stockId, StockDataTypeType dataType, Integer dataCount) {

@@ -49,6 +49,16 @@ public class StockController extends AbstractController {
 	}
 
 	/**
+	 * 查詢 K 線 + MA + EMA 資料
+	 */
+	@RequestMapping(value = "/queryStockData", method = RequestMethod.GET)
+	public @ResponseBody Map<String, Object> queryStockData(@RequestParam(value = "si") String stockId,
+			@RequestParam(value = "dt") String dataType,
+			@RequestParam(value = "dn", required = false, defaultValue = "130") Integer dataCount) {
+		return stockService.queryStockData(stockId, dataType, dataCount);
+	}
+
+	/**
 	 * 依據資料筆數 代碼 資料型別回傳指定的資料 for 蘭姐xcel 只抓取開高低收 為了excel方便使用，不直接回傳data list
 	 */
 	@RequestMapping(value = "/queryStockData2", method = RequestMethod.GET)

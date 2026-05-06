@@ -132,6 +132,9 @@ public class StockCommonService extends AbstractService {
 				if (turn.isEmpty()) {
 					ma = new StockDataTurn();
 					ma.setId(id);
+					int year = java.time.Instant.ofEpochMilli(id.getDataTime())
+							.atZone(ZoneId.of("Asia/Taipei")).getYear();
+					ma.setDataYear(year);
 				}
 				else {
 					ma = turn.get();

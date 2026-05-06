@@ -14,6 +14,9 @@ public class StockDataTurn extends BaseEntity {
 	@EmbeddedId
 	private StockDataId id;
 
+	@Column(name = "dataYear")
+	private Integer dataYear;
+
 	//日多空中軸
 	@Column
 	private Double middle;
@@ -140,6 +143,14 @@ public class StockDataTurn extends BaseEntity {
 
 	public void setId(StockDataId id) {
 		this.id = id;
+	}
+
+	public Integer getDataYear() {
+		return dataYear;
+	}
+
+	public void setDataYear(Integer dataYear) {
+		this.dataYear = dataYear;
 	}
 
 	public Double getMiddle() {
