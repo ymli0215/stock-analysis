@@ -347,7 +347,7 @@ StockApp/ 為 Cordova App 專案目錄
 ### 資料庫連線資訊
 
 ```
-Host:     1.34.57.147:3308
+Host:     1.34.57.147:3305
 Database: stockapp
 Driver:   MySQL（須確認版本）
 ```
