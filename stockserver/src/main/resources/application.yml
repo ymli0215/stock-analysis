@@ -9,7 +9,7 @@ spring:
     basename: i18n/messages
     encoding: UTF-8
   datasource:
-    url: jdbc:mysql://1.34.57.147:3305/stockapp?useUnicode=true&characterEncoding=UTF-8
+    url: jdbc:mysql://1.34.57.147:3308/stockapp?useUnicode=true&characterEncoding=UTF-8
     username: root
     password: ca27an12C
     driver-class-name: com.mysql.jdbc.Driver

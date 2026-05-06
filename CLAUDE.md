@@ -253,7 +253,7 @@ stockapp/
 | 跨域請求 | JSONP（`$.ajax` + `dataType: "jsonp"`） |
 | 後端框架 | Spring Boot 3.x |
 | ORM | JPA / Hibernate（`MySQL55Dialect`） |
-| 資料庫 | MySQL（Host: `1.34.57.147:3305`, DB: `stockapp`） |
+| 資料庫 | MySQL（Host: `1.34.57.147:3308`, DB: `stockapp`） |
 | 連線池 | HikariCP（max: 10, min-idle: 5） |
 | 非同步 | `@EnableAsync` + `Future<CallbackResult>` |
 | 排程 | `@EnableScheduling` + `@Scheduled(cron = ...)` |
@@ -1004,7 +1004,7 @@ FROM source_table;
 | `stock` | Tomcat 10.1，Spring Boot + HTML5 前端 | 8101→8080 |
 | `stock-analysis` | Python Dash 儀表板 | 8050 |
 | `stock-jp-api` | Python FastAPI 日股資料服務 | 8090 |
-| `mysql55` | MySQL 5.5，主資料庫 stockapp | 3305→3306 |
+| `mysql55` | MySQL 5.5，主資料庫 stockapp | 3308→3306 |
 
 ### Spring Boot 部署方式
 
