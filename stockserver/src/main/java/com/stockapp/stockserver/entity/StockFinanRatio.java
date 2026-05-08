@@ -11,7 +11,7 @@ import jakarta.persistence.Table;
  * 財務比率表
  */
 @Entity
-@Table(name = "StockFinanRatio")
+@Table(name = "stockfinanratio")
 public class StockFinanRatio extends BaseEntity {
 	@EmbeddedId
 	private StockFinanId id;

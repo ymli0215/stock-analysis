@@ -11,7 +11,7 @@ import jakarta.persistence.Table;
  * 損益表
  */
 @Entity
-@Table(name = "StockFinanDetail")
+@Table(name = "stockfinandetail")
 public class StockFinanDetail extends BaseEntity {
 	@EmbeddedId
 	private StockFinanId id;

@@ -9,15 +9,15 @@ spring:
     basename: i18n/messages
     encoding: UTF-8
   datasource:
-    url: jdbc:mysql://1.34.57.147:3305/stockapp?useUnicode=true&characterEncoding=UTF-8
-    username: root
-    password: ca27an12C
-    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://${DB_HOST:mysql84}:${DB_PORT:3306}/stockapp?useUnicode=true&characterEncoding=UTF-8
+    username: ${DB_USER:root}
+    password: ${DB_PASSWORD:ca27an12C}
+    driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     show-sql: false
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.MySQL55Dialect
+        dialect: org.hibernate.dialect.MySQL8Dialect
         format_sql: false
         show_sql: false
   hikari:

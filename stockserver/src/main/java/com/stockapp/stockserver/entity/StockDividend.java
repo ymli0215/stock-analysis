@@ -13,7 +13,7 @@ import jakarta.persistence.Table;
  * 股息股利
  */
 @Entity
-@Table(name = "StockDividend")
+@Table(name = "stockdividend")
 public class StockDividend extends BaseEntity {
 	@EmbeddedId
 	private StockFinanId id;

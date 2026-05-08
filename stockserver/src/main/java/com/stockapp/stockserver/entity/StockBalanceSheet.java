@@ -13,7 +13,7 @@ import jakarta.persistence.Table;
  * 資產負債表
  */
 @Entity
-@Table(name = "StockBalanceSheet")
+@Table(name = "stockbalancesheet")
 public class StockBalanceSheet extends BaseEntity {
 	@EmbeddedId
 	private StockFinanId id;

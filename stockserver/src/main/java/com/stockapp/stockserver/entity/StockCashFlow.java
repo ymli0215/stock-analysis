@@ -11,7 +11,7 @@ import jakarta.persistence.Table;
  * 現金流量表
  */
 @Entity
-@Table(name = "StockCashFlow")
+@Table(name = "stockcashflow")
 public class StockCashFlow extends BaseEntity {
 	@EmbeddedId
 	private StockFinanId id;

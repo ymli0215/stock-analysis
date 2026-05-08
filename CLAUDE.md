@@ -1,10 +1,10 @@
 # CLAUDE.md — Stock Analysis 專案開發參考文件
 
-> 最後更新：2026-04-27
+> 最後更新：2026-05-08
 
 ---
 
-## 零、目前完成狀態（2026-04-19 ~ 04-20）
+## 零、目前完成狀態（2026-04-19 ~ 05-08）
 
 ### DB 層
 
@@ -14,6 +14,9 @@
 | ✅ | 5 張大表（StockData、StockDataMA、StockDataEMA、StockDataTurn、StockDataRSI）加 secondary index `idx_stock_type_time` |
 | ✅ | `volume` / `volume2` 欄位由 INT 改為 BIGINT |
 | ✅ | `stock_fundamental` 新表（三市場基本面資料：PE、EPS、殖利率等） |
+| ✅ | 切換到 MySQL 8.4（mysql84，port 3308） |
+| ✅ | 所有 Entity `@Table` name 統一改為小寫 |
+| ✅ | mysql84 大寫表 rename 為小寫 |
 
 ### Python 層
 
@@ -54,11 +57,12 @@
 | 優先度 | 項目 |
 |--------|------|
 | ✅ | `www` 資料夾清理（Tomcat webapps 舊檔） |
-| 中 | 日股清單擴充（目前 16 支） |
-| 中 | 美股基本面資料補齊 |
-| 中 | 台股基本面整合現有六張財務表 |
 | ✅ | DB 分區重設計（Phase 2）— 5 張表全部完成 |
-| ⬜ | 觀察 1-2 天後執行 `21_drop_backup_tables.sql` 清理備份表 |
+| ✅ | MySQL 8.4 搬家（mysql84，port 3308） |
+| ⬜ | mysql55 / mysql84 備份表清理（確認穩定後） |
+| ⬜ | 日股清單擴充（目前 16 支） |
+| ⬜ | 美股基本面資料補齊 |
+| ⬜ | 台股基本面整合現有六張財務表 |
 
 ---
 
@@ -1004,7 +1008,22 @@ FROM source_table;
 | `stock` | Tomcat 10.1，Spring Boot + HTML5 前端 | 8101→8080 |
 | `stock-analysis` | Python Dash 儀表板 | 8050 |
 | `stock-jp-api` | Python FastAPI 日股資料服務 | 8090 |
-| `mysql55` | MySQL 5.5，主資料庫 stockapp | 3305→3306 |
+| `mysql84` | MySQL 8.4，主資料庫 stockapp | 3308→3306 |
+| `mysql55` | MySQL 5.5，舊版備用，暫時保留 | 3305→3306 |
+
+### DB 連線環境變數
+
+Spring Boot 的 DB 連線透過環境變數注入，`application.yml` 使用 `${VAR:預設值}` 語法：
+
+| 環境變數 | 預設值 | 說明 |
+|---------|--------|------|
+| `DB_HOST` | `mysql84` | DB container 名稱或 IP |
+| `DB_PORT` | `3306` | DB port（container 內部 port） |
+| `DB_USER` | `root` | DB 使用者 |
+| `DB_PASSWORD` | `ca27an12C` | DB 密碼 |
+
+實際值由 `tomcat/10.1/docker-compose.yml` 的 `environment` 區塊覆蓋注入。
+本機直接啟動 JAR 時，若未設定環境變數則使用預設值（連 `mysql84` container）。
 
 ### Spring Boot 部署方式
 
