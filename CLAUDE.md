@@ -1,6 +1,32 @@
 # CLAUDE.md — Stock Analysis 專案開發參考文件
 
-> 最後更新：2026-05-08
+> 最後更新：2026-05-13
+
+---
+
+## 零之一、目前待解決問題（2026-05-13）
+
+### mysql connector jar 問題
+
+Spring Boot 部署到 Tomcat 後找不到 `com.mysql.cj.jdbc.Driver`
+
+**原因：** Tomcat lib 目錄沒有 `mysql-connector-j` jar
+
+**解決步驟：**
+```bash
+# 1. 在 WSL 找到 jar
+find ~/.m2 -name "mysql-connector-j*.jar"
+
+# 2. 複製到 Tomcat lib
+docker cp <jar路徑> stock:/usr/local/tomcat/lib/
+
+# 3. 重啟 Tomcat
+docker restart stock
+```
+
+**目前系統狀態：**
+- Spring Boot 無法啟動（DB driver 問題）
+- mysql84 切換設定已完成，等 jar 問題解決後即可運作
 
 ---
 
@@ -1145,3 +1171,47 @@ cp /mnt/d/Environments/stock-analysis/stock-analysis/StockApp/www/savepage.html 
 2. 在 `savepage.html` 的 Tab 內容區加入對應的表單
 3. 確認 API 端點（`https://stock.bignoodle.net/StockServer/` 開頭）
 4. 執行同步指令更新 Tomcat 版本
+
+---
+
+## 十八、investanchors 定錨網站爬蟲
+
+**位置：** `investanchors-scraper/`（本 repo 內，原資料夾名稱 `test` 已改名並搬入版控目錄；子目錄自帶 `.gitignore` 排除 `.env`、`venv/`、`__pycache__/`、`*.pyc`、`output/`，這些檔案本身仍不進 Git）
+
+### 用途
+
+登入 investanchors.com（付費會員制財經網站），抓取「未讀文章」清單，逐篇下載完整 HTML，透過既有的 `POST /stockPageRaw/save` API（見本文件第十五節）寫入 `stock_page_raw` 表，供後續 n8n + AI 處理。屬於資料收集工具鏈的一部分，與 `savepage.html`（第十七節）用途相同、但改為自動化批次抓取而非手動貼上。
+
+### 環境設定
+
+`.env`（不進 Git）需包含：
+```
+INVESTANCHORS_EMAIL=<登入帳號>
+INVESTANCHORS_PASSWORD=<登入密碼>
+```
+使用獨立 `venv`（Python 3.10），套件：`requests`、`beautifulsoup4`、`python-dotenv`。
+
+### 核心流程（登入 → 抓取 → 存檔）
+
+1. **登入**：`GET /user/register/new` 取得頁面中的 `authenticity_token`（Rails CSRF token），再 `POST /user/session` 帶 `user[email]` / `user[password]`。用「最終 URL 是否含 register/sign_in/login」與「頁面是否含登出關鍵字/連結」雙重判斷登入是否成功。
+2. **抓未讀清單**：`GET /user/vip_contents/investanchors_index`，解析 `<tr class="active">`（= 未讀文章的標記方式）內的 `<a class="td-a">` 取得標題與連結，用正規表示式 `/(\d+)(?:[/?]|$)` 從 URL 取出文章 ID。
+3. **逐篇抓取**：`GET` 文章頁（`Referer` 帶列表頁網址），驗證回應是否以 `<!doctype html` 開頭（否則視為未取得完整頁面，可能是 session 失效或被導回登入頁），驗證通過才視為成功。
+4. **寫入 API**：`POST https://stock.bignoodle.net/StockServer/stockPageRaw/save`，JSON body `{url, htmlContent, source: "定錨"}`，回應需 `status == "ok"` 才算成功。
+5. 每篇之間 `sleep(10)` 避免請求過密。
+
+### 檔案說明
+
+| 檔案 | 用途 |
+|------|------|
+| `run_scraper.py` | **正式批次腳本**：登入 → 抓全部未讀文章 → 逐篇存入 API，含完整成功/失敗總結報告 |
+| `test_scrape.py` | 測試腳本：登入 → 抓列表 → 只存第一篇文章 HTML 到本地 `output/`（不呼叫 API），用於驗證登入與解析邏輯 |
+| `test_fetch_and_save.py` | 測試腳本：針對單一寫死的文章 ID（`17827077851593`）驗證「抓取 → 存檔 → 呼叫 API」完整鏈路 |
+| `output/` | 測試腳本存放抓取的原始 HTML（不進 Git） |
+
+### 注意事項
+
+1. **登入頁結構依賴**：`authenticity_token` 抓取依賴 Rails 的 `<input name="authenticity_token">`，若網站改版此欄位消失/改名，登入會直接失敗並印出診斷訊息。
+2. **未讀文章判斷方式**：完全依賴 `<tr class="active">` 這個 CSS class，若網站改版此標記消失，`get_unread_articles()` 會回傳空清單。
+3. **HTML 完整性驗證**：用回應是否以 `<!doctype html` 開頭判斷是否為完整頁面，用來偵測 session 過期或被導回登入頁的情況（此時回應通常是片段 HTML 或重導頁面）。
+4. **與 `stockPageRaw` API 的關聯**：此爬蟲是 `POST /stockPageRaw/save` API（第十五節）的其中一個資料來源（`source: "定錨"`），寫入後續由 n8n + AI 處理，狀態機為 `ai_status`（0 待處理 / 1 處理中 / 2 完成 / 3 失敗）。
+5. **`.env`／`venv/`／`output/` 不進 Git**：僅程式碼本身（`run_scraper.py` 等）受版控，憑證與執行產出仍靠子目錄的 `.gitignore` 排除，搬移或重灌環境時記得重建。
