@@ -27,7 +27,10 @@ status 語義：`0` 待處理 / `1` 處理中（失敗會停在這裡並發 TG �
 
 ## 部署
 
-由 `stock-analysis/docker-compose.yml` 的 `stock-collector` service 啟動（claude-agent-base image）。
+由 `stock-analysis/docker-compose.yml` 的 `stock-collector` service 啟動，port `8085`（不影響既有的 8050/8090）。
+image `stock-collector:1.0` 以專案現有的 `stock-analysis:1.2` 為基底、只補 Node.js + claude CLI，
+由 Dockerfile **初次建立一次**；日常維運一律透過 docker compose（程式碼 volume 掛載、
+依賴變更由啟動時 pip install 處理），不重建 image、不依賴任何 stock 專案以外的資源。
 設定放 `.env`（不進版控，範本見 `.env.example`）。claude CLI 認證走 `ANTHROPIC_AUTH_TOKEN` + `ANTHROPIC_BASE_URL` 環境變數。
 
 ```bash
