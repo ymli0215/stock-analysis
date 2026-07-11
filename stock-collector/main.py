@@ -15,7 +15,7 @@ from apscheduler.triggers.interval import IntervalTrigger
 from fastapi import BackgroundTasks, FastAPI, HTTPException
 
 import config
-from jobs import stock_collect, stockserver_maintenance
+from jobs import stock_collect, stockserver_maintenance, vocus_collect
 
 config.LOG_DIR.mkdir(parents=True, exist_ok=True)
 logging.basicConfig(
@@ -32,6 +32,7 @@ JOBS = {
     "stock_collect": stock_collect.run,
     "sync_stock_data": stockserver_maintenance.sync_stock_data,
     "import_warrant": stockserver_maintenance.import_warrant,
+    "vocus_collect": vocus_collect.run,
 }
 
 last_results: dict[str, dict] = {}
@@ -89,6 +90,16 @@ def _register_schedules() -> None:
             max_instances=1,
         )
         logger.info("已排程 import_warrant：週一至五 07:00")
+    if config.VOCUS_COLLECT_ENABLED:
+        scheduler.add_job(
+            run_job,
+            CronTrigger(hour=config.VOCUS_CRON_HOURS, minute=0),
+            args=["vocus_collect"],
+            id="vocus_collect",
+            max_instances=1,
+            coalesce=True,
+        )
+        logger.info("已排程 vocus_collect：每日 %s 時", config.VOCUS_CRON_HOURS)
 
 
 @app.on_event("startup")
@@ -96,10 +107,11 @@ def startup() -> None:
     _register_schedules()
     scheduler.start()
     logger.info(
-        "stock-collector 已啟動，排程狀態：stock_collect=%s sync=%s warrant=%s",
+        "stock-collector 已啟動，排程狀態：stock_collect=%s sync=%s warrant=%s vocus=%s",
         config.STOCK_COLLECT_ENABLED,
         config.SYNC_STOCK_DATA_ENABLED,
         config.IMPORT_WARRANT_ENABLED,
+        config.VOCUS_COLLECT_ENABLED,
     )
 
 

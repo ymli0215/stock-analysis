@@ -13,9 +13,10 @@ def sanitize_filename(name: str) -> str:
     return name[:180]
 
 
-def write_note(file_name: str, content: str) -> Path:
-    config.NOTE_DIR.mkdir(parents=True, exist_ok=True)
-    path = config.NOTE_DIR / sanitize_filename(file_name)
+def write_note(file_name: str, content: str, target_dir: Path | None = None) -> Path:
+    target = target_dir or config.NOTE_DIR
+    target.mkdir(parents=True, exist_ok=True)
+    path = target / sanitize_filename(file_name)
     path.write_text(content, encoding="utf-8")
     logger.info("筆記已寫入 %s (%d bytes)", path, len(content.encode("utf-8")))
     return path

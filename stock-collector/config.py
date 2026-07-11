@@ -48,6 +48,26 @@ NOTIFY_GROUP_CHAT_ID = env("NOTIFY_GROUP_CHAT_ID", "-4921060460")
 OBSIDIAN_ROOT = Path(env("OBSIDIAN_ROOT", "/obsidian"))
 NOTE_DIR = OBSIDIAN_ROOT / "00_Inbox"
 ASSET_DIR = OBSIDIAN_ROOT / "Assets"
+SOURCES_DIR = OBSIDIAN_ROOT / "01_Sources"
+
+# --- Vocus 沙龍收集（取代 Get Vocus flow）---
+VOCUS_EMAIL = env("VOCUS_EMAIL", "")
+VOCUS_PASSWORD = env("VOCUS_PASSWORD", "")
+VOCUS_COLLECT_ENABLED = env_bool("VOCUS_COLLECT_ENABLED", False)
+# 每次執行每個沙龍最多處理幾篇（避免首次全量 1000+ 篇一次跑爆；分批消化）
+VOCUS_MAX_PER_RUN = int(env("VOCUS_MAX_PER_RUN", "5"))
+# 排程：預設每日 06:00 與 18:00（比照原 n8n flow）
+VOCUS_CRON_HOURS = env("VOCUS_CRON_HOURS", "6,18")
+# 沙龍清單：格式 "salonId:名稱,salonId:名稱"（新增沙龍加一筆即可）
+_salons_raw = env(
+    "VOCUS_SALONS",
+    "6453433ffd897800018c4efa:邏輯投資,65364e53fd89780001c37e92:摩股史塔克",
+)
+VOCUS_SALONS = [
+    {"salon_id": s.split(":", 1)[0].strip(), "salon_name": s.split(":", 1)[1].strip()}
+    for s in _salons_raw.split(",")
+    if ":" in s
+]
 
 # --- LLM（claude CLI）---
 CLAUDE_BIN = env("CLAUDE_BIN", "claude")

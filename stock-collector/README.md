@@ -10,6 +10,24 @@ n8n flow 遷移後的 Python worker：輪詢 MySQL 佇列、claude CLI 分析、
 | `stock_collect` | 股票資訊收集分析 - SCHEDULE（vzqX5VmmeDkoovX6） | 每 120 秒 | `STOCK_COLLECT_ENABLED` |
 | `sync_stock_data` | Sync Stock Data（208JRIcBB1BiXZj9） | 週六 06:00 | `SYNC_STOCK_DATA_ENABLED` |
 | `import_warrant` | 每日更新上市櫃權證資料（pC2cOkmx1c4389IN） | 週一至五 07:00 | `IMPORT_WARRANT_ENABLED` |
+| `vocus_collect` | Get Vocus-摩股雙週報（a0nASk4JksapafXd）＋ 邏輯投資（TQYmb4Ahut7FGAY1） | 每日 06:00、18:00 | `VOCUS_COLLECT_ENABLED` |
+
+### vocus_collect 資料流（選項 A：爬蟲層正規化）
+
+```
+帳密登入 api.vocus.cc → 取 token → 逐沙龍抓文章清單（VOCUS_SALONS 設定驅動）
+  → vocus_sync_log 去重 → 逐篇：
+    取詳情（吸收 post/article 兩種型別差異）→ 下載圖片到 /obsidian/Assets（vocus 原生 UUID 檔名）
+    → 組正規化 markdown（正文含 ![[Assets/..]] + 問答對話）
+    → claude CLI 分析（知識索引與分析專家，callout 格式）
+    → 最終筆記寫 /obsidian/01_Sources → Telegram 通知 → 寫入 vocus_sync_log
+```
+
+**兩種型別差異（已在 services/vocus.py 吸收）**：`post` 走 `/api/posts/{id}`（欄位平鋪、內文無圖、圖片在獨立陣列）；`article` 走 `/api/article/{id}`（資料包在 article 物件、內文 HTML 圖片內嵌）。留言端點用單數型別 `/api/comments/{post|article}/{id}`（注意與詳情端點的 posts 複數不同），回覆作者在父留言 `replyUser` 以 userId 對應。
+
+**選項 A 的意義**：圖片在爬蟲階段用 token 下載完（付費內容下游拿不到 token），輸出的是已正規化 markdown。investanchors 之後 Python 化時套同一種輸出，下游 AI 分析就能對所有來源共用一套處理，不需為每個網站寫特例（定錨 n8n flow 的圖片 regex 寫死 `/uploads/image/file/`，vocus 資料丟進去會抓不到圖，正是要避免的反例）。
+
+新增沙龍：改 `VOCUS_SALONS`（格式 `salonId:名稱,salonId:名稱`）即可，程式不動。首次全量大（邏輯投資 1050 篇），用 `VOCUS_MAX_PER_RUN` 分批消化。
 
 完整的 flow 盤點與遷移計畫見 `/mnt/d/Environments/ubuntu-n8n/N8N_FLOWS_INVENTORY.md`。
 
